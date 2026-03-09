@@ -14,12 +14,6 @@ jobs:
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
     timeout-minutes: 20
     steps:
-      - name: Check Sentry token
-        if: ${{ env.SENTRY_AUTH_TOKEN == '' }}
-        run: |
-          echo "::notice::SENTRY_AUTH_TOKEN not set, skipping release"
-          exit 0
-
       - name: Checkout
         if: ${{ env.SENTRY_AUTH_TOKEN != '' }}
         uses: actions/checkout@v4
