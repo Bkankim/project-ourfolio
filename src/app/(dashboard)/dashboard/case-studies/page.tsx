@@ -26,9 +26,7 @@ export default function CaseStudiesPage() {
   };
 
   useEffect(() => {
-    fetch("/api/case-studies")
-      .then((res) => (res.ok ? res.json() : Promise.reject()))
-      .then((data) => setItems(data.caseStudies))
+    fetchItems()
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);

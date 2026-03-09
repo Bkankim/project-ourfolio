@@ -26,9 +26,7 @@ export default function ProjectsPage() {
   };
 
   useEffect(() => {
-    fetch("/api/projects")
-      .then((res) => (res.ok ? res.json() : Promise.reject()))
-      .then((data) => setProjects(data.projects))
+    fetchProjects()
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
@@ -135,7 +133,7 @@ export default function ProjectsPage() {
       )}
 
       <ProjectDialog
-        key={editingProject?.id ?? "new"}
+        key={dialogOpen ? (editingProject?.id ?? "new") : "closed"}
         open={dialogOpen}
         onOpenChange={setDialogOpen}
         project={editingProject}
