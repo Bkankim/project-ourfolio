@@ -27,7 +27,7 @@ export default function SettingsPage() {
   const [socialLinks, setSocialLinks] = useState<SocialLinks>({});
   const [saving, setSaving] = useState(false);
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect -- profile loads async from auth hook; form state init requires sync
+  /* eslint-disable react-hooks/set-state-in-effect -- profile loads async from auth hook; form state init requires sync */
   useEffect(() => {
     if (profile) {
       setFullName(profile.fullName ?? "");
@@ -42,6 +42,7 @@ export default function SettingsPage() {
       setSocialLinks((profile.socialLinks as SocialLinks) ?? {});
     }
   }, [profile]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   const handleSave = async () => {
     setSaving(true);
