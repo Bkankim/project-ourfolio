@@ -6,6 +6,8 @@ import { profiles, projects, caseStudies } from "@/db/schema";
 import { eq, asc } from "drizzle-orm";
 import { PortfolioClient } from "@/components/portfolio/portfolio-client";
 
+export const revalidate = 60;
+
 interface PageProps {
   params: Promise<{ username: string }>;
 }

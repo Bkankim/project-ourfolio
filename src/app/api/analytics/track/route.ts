@@ -2,8 +2,14 @@ import { NextResponse, type NextRequest } from "next/server";
 import { db } from "@/db";
 import { analyticsEvents } from "@/db/schema";
 import { trackEventSchema } from "@/lib/validations";
+import { rateLimit, rateLimitResponse, getClientIp } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
+  const ip = getClientIp(request);
+  const { success } = rateLimit(`analytics:${ip}`, 60, 60_000);
+
+  if (!success) return rateLimitResponse(60);
+
   const body = await request.json();
   const parsed = trackEventSchema.safeParse(body);
 

@@ -4,16 +4,19 @@ import { db } from "@/db";
 import { projects } from "@/db/schema";
 import { eq, asc } from "drizzle-orm";
 import { createProjectSchema } from "@/lib/validations";
+import { parseLimit } from "@/lib/utils";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const { profileId } = await getAuthSession();
+    const limit = parseLimit(request.url);
 
     const result = await db
       .select()
       .from(projects)
       .where(eq(projects.profileId, profileId))
-      .orderBy(asc(projects.displayOrder));
+      .orderBy(asc(projects.displayOrder))
+      .limit(limit);
 
     return NextResponse.json({ projects: result });
   } catch (err) {

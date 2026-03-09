@@ -35,9 +35,16 @@ export async function GET(
       .orderBy(asc(caseStudies.displayOrder)),
   ]);
 
-  return NextResponse.json({
-    profile,
-    projects: userProjects,
-    caseStudies: userCaseStudies,
-  });
+  return NextResponse.json(
+    {
+      profile,
+      projects: userProjects,
+      caseStudies: userCaseStudies,
+    },
+    {
+      headers: {
+        "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
+      },
+    }
+  );
 }
