@@ -79,12 +79,12 @@ export default function DashboardPage() {
 
       <StatsCards stats={data.stats} />
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
         <WeeklyChart dailyViews={data.dailyViews} />
         <PortfolioScore data={data.portfolioScore} />
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
         <QuickActions username={profile?.username} />
         <RecentLeads leads={data.recentLeads} />
       </div>
