@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageToggle } from "@/components/language-toggle";
@@ -12,10 +13,20 @@ import { useAuth } from "@/hooks/use-auth";
 import { getUserDisplayName, getInitials } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
+const NAV_LINKS = [
+  { href: "#features", labelKey: "features" },
+  { href: "#pricing", labelKey: "pricing" },
+] as const;
+
+const navLinkClass = "text-sm text-muted-foreground hover:text-foreground transition-colors";
+
 export function Navbar() {
   const { t } = useI18n();
   const { user, profile, signOut } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => { setMobileOpen(false); }, [pathname]);
 
   const displayName = getUserDisplayName(profile?.fullName, user?.email);
   const initials = getInitials(displayName);
@@ -29,12 +40,11 @@ export function Navbar() {
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">
-          <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-            {t("features")}
-          </a>
-          <a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-            {t("pricing")}
-          </a>
+          {NAV_LINKS.map((link) => (
+            <a key={link.href} href={link.href} className={navLinkClass}>
+              {t(link.labelKey)}
+            </a>
+          ))}
         </nav>
 
         <div className="flex items-center gap-2">
@@ -61,57 +71,55 @@ export function Navbar() {
             </div>
           ) : (
             <>
-              <Link href="/auth" className="hidden sm:inline-flex">
+              <Link href="/auth" className="hidden md:inline-flex">
                 <Button variant="ghost" size="sm" className="rounded-lg">
                   {t("login")}
                 </Button>
               </Link>
-              <Link href="/auth" className="hidden sm:inline-flex">
+              <Link href="/auth" className="hidden md:inline-flex">
                 <Button size="sm" className="rounded-lg">
                   {t("signup")}
                 </Button>
               </Link>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="md:hidden rounded-lg"
-                onClick={() => setMobileOpen(!mobileOpen)}
-              >
-                {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-              </Button>
             </>
           )}
+          <Button
+            variant="ghost"
+            size="sm"
+            className="md:hidden rounded-lg"
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </Button>
         </div>
       </div>
 
       {mobileOpen && (
         <div className="md:hidden border-t border-border/40 bg-background px-4 py-4 space-y-3">
-          <a
-            href="#features"
-            className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
-            onClick={() => setMobileOpen(false)}
-          >
-            {t("features")}
-          </a>
-          <a
-            href="#pricing"
-            className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
-            onClick={() => setMobileOpen(false)}
-          >
-            {t("pricing")}
-          </a>
-          <div className="pt-2 flex gap-2">
-            <Link href="/auth" className="flex-1" onClick={() => setMobileOpen(false)}>
-              <Button variant="outline" size="sm" className="w-full rounded-lg">
-                {t("login")}
-              </Button>
-            </Link>
-            <Link href="/auth" className="flex-1" onClick={() => setMobileOpen(false)}>
-              <Button size="sm" className="w-full rounded-lg">
-                {t("signup")}
-              </Button>
-            </Link>
-          </div>
+          {NAV_LINKS.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className={`block ${navLinkClass}`}
+              onClick={() => setMobileOpen(false)}
+            >
+              {t(link.labelKey)}
+            </a>
+          ))}
+          {!user && (
+            <div className="pt-2 flex gap-2">
+              <Link href="/auth" className="flex-1" onClick={() => setMobileOpen(false)}>
+                <Button variant="outline" size="sm" className="w-full rounded-lg">
+                  {t("login")}
+                </Button>
+              </Link>
+              <Link href="/auth" className="flex-1" onClick={() => setMobileOpen(false)}>
+                <Button size="sm" className="w-full rounded-lg">
+                  {t("signup")}
+                </Button>
+              </Link>
+            </div>
+          )}
         </div>
       )}
     </header>
