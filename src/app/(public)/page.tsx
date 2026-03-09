@@ -40,7 +40,7 @@ export default function HomePage() {
         <p className="mt-6 text-lg text-muted-foreground max-w-2xl leading-relaxed">
           {t("heroDesc")}
         </p>
-        <div className="mt-8 flex items-center gap-4">
+        <div className="mt-8 flex flex-col sm:flex-row items-center gap-4">
           <Link href="/auth">
             <Button size="lg" className="rounded-xl gap-2">
               {t("getStarted")} <ArrowRight className="h-4 w-4" />

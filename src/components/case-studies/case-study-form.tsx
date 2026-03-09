@@ -187,7 +187,7 @@ export function CaseStudyForm({ caseStudy, onSave, onCancel }: CaseStudyFormProp
             </Button>
           </div>
           {metrics.map((metric, idx) => (
-            <div key={idx} className="grid grid-cols-[1fr_1fr_80px_32px] gap-2 items-end">
+            <div key={idx} className="grid grid-cols-2 sm:grid-cols-[1fr_1fr_80px_32px] gap-2 items-end">
               <Input
                 placeholder={t("metricLabel")}
                 value={metric.label}

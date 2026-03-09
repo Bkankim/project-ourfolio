@@ -46,7 +46,7 @@ export function PortfolioHero({ profile, socialLinks, style }: PortfolioHeroProp
 
   return (
     <section className="text-center space-y-6">
-      <Avatar className="h-24 w-24 mx-auto ring-4 ring-[var(--portfolio-primary)]/20">
+      <Avatar className="h-20 w-20 md:h-24 md:w-24 mx-auto ring-4 ring-[var(--portfolio-primary)]/20">
         <AvatarImage src={profile.avatarUrl ?? undefined} />
         <AvatarFallback className="text-2xl bg-[var(--portfolio-primary)]/10">
           {getInitials(profile.fullName ?? "U")}
