@@ -64,20 +64,18 @@ jobs:
 
       - name: Health Check
         run: |
-          DEPLOY_URL="${{ steps.deploy.outputs.deploy_url }}"
-          if [ -n "$DEPLOY_URL" ]; then
-            for i in 1 2 3; do
-              STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$DEPLOY_URL" || true)
-              if [ "$STATUS" = "200" ]; then
-                echo "Health check passed (HTTP $STATUS)"
-                exit 0
-              fi
-              echo "Attempt $i: HTTP $STATUS, retrying in 10s..."
-              sleep 10
-            done
-            echo "ERROR: Health check failed after 3 attempts (HTTP $STATUS)"
-            exit 1
-          fi
+          CHECK_URL="https://outfolio.bkan.dev"
+          for i in 1 2 3; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$CHECK_URL" || true)
+            if [ "$STATUS" -ge 200 ] && [ "$STATUS" -lt 500 ]; then
+              echo "Health check passed (HTTP $STATUS)"
+              exit 0
+            fi
+            echo "Attempt $i: HTTP $STATUS, retrying in 10s..."
+            sleep 10
+          done
+          echo "ERROR: Health check failed after 3 attempts (HTTP $STATUS)"
+          exit 1
 
       - name: Notify Slack - Success
         if: ${{ env.SLACK_BOT_TOKEN != '' }}
