@@ -16,9 +16,11 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    env:
+      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
     steps:
       - name: PR Opened
-        if: ${{ github.event.action == 'opened' && secrets.SLACK_BOT_TOKEN != '' }}
+        if: ${{ github.event.action == 'opened' && env.SLACK_BOT_TOKEN != '' }}
         uses: slackapi/slack-github-action@v1.24.0
         with:
           channel-id: ${{ secrets.SLACK_DEV_CHANNEL }}
@@ -31,7 +33,7 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
       - name: PR Merged
-        if: ${{ github.event.action == 'closed' && github.event.pull_request.merged == true && secrets.SLACK_BOT_TOKEN != '' }}
+        if: ${{ github.event.action == 'closed' && github.event.pull_request.merged == true && env.SLACK_BOT_TOKEN != '' }}
         uses: slackapi/slack-github-action@v1.24.0
         with:
           channel-id: ${{ secrets.SLACK_DEV_CHANNEL }}
@@ -46,9 +48,11 @@ jobs:
     if: github.event_name == 'release'
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    env:
+      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
     steps:
       - name: Release Published
-        if: ${{ secrets.SLACK_BOT_TOKEN != '' }}
+        if: ${{ env.SLACK_BOT_TOKEN != '' }}
         uses: slackapi/slack-github-action@v1.24.0
         with:
           channel-id: ${{ secrets.SLACK_DEPLOY_CHANNEL }}

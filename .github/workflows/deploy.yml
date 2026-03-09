@@ -23,6 +23,7 @@ jobs:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
     steps:
       - name: Preflight — check required secrets
         run: |
@@ -80,7 +81,7 @@ jobs:
           fi
 
       - name: Notify Slack - Success
-        if: ${{ secrets.SLACK_BOT_TOKEN != '' }}
+        if: ${{ env.SLACK_BOT_TOKEN != '' }}
         uses: slackapi/slack-github-action@v1.24.0
         with:
           channel-id: ${{ secrets.SLACK_DEPLOY_CHANNEL }}
@@ -93,7 +94,7 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
       - name: Notify Slack - Failure
-        if: ${{ failure() && secrets.SLACK_BOT_TOKEN != '' }}
+        if: ${{ failure() && env.SLACK_BOT_TOKEN != '' }}
         uses: slackapi/slack-github-action@v1.24.0
         with:
           channel-id: ${{ secrets.SLACK_BK_USER_ID }}

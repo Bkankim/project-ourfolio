@@ -9,16 +9,25 @@ permissions:
 
 jobs:
   sentry-release:
-    if: ${{ secrets.SENTRY_AUTH_TOKEN != '' }}
     runs-on: ubuntu-latest
+    env:
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
     timeout-minutes: 20
     steps:
+      - name: Check Sentry token
+        if: ${{ env.SENTRY_AUTH_TOKEN == '' }}
+        run: |
+          echo "::notice::SENTRY_AUTH_TOKEN not set, skipping release"
+          exit 0
+
       - name: Checkout
+        if: ${{ env.SENTRY_AUTH_TOKEN != '' }}
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Create Sentry Release
+        if: ${{ env.SENTRY_AUTH_TOKEN != '' }}
         uses: getsentry/action-release@v1
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
