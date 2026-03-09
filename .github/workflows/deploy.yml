@@ -1,0 +1,105 @@
+name: Deploy to Vercel
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  NODE_VERSION: '22'
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: production
+    steps:
+      - name: Preflight — check required secrets
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::error::VERCEL_TOKEN is required for deploy. Set it in repository secrets."
+            exit 1
+          fi
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install Vercel CLI
+        run: pnpm add -g vercel
+
+      - name: Pull Vercel Environment
+        run: vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+
+      - name: Build
+        run: vercel build --prod --token=$VERCEL_TOKEN
+
+      - name: Deploy
+        id: deploy
+        run: |
+          url=$(vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN)
+          echo "deploy_url=$url" >> $GITHUB_OUTPUT
+
+      - name: Health Check
+        run: |
+          DEPLOY_URL="${{ steps.deploy.outputs.deploy_url }}"
+          if [ -n "$DEPLOY_URL" ]; then
+            for i in 1 2 3; do
+              STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$DEPLOY_URL" || true)
+              if [ "$STATUS" = "200" ]; then
+                echo "Health check passed (HTTP $STATUS)"
+                exit 0
+              fi
+              echo "Attempt $i: HTTP $STATUS, retrying in 10s..."
+              sleep 10
+            done
+            echo "ERROR: Health check failed after 3 attempts (HTTP $STATUS)"
+            exit 1
+          fi
+
+      - name: Notify Slack - Success
+        if: ${{ secrets.SLACK_BOT_TOKEN != '' }}
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          channel-id: ${{ secrets.SLACK_DEPLOY_CHANNEL }}
+          slack-message: |
+            :rocket: *배포 완료*
+            브랜치: `main`
+            커밋: `${{ github.sha }}`
+            URL: ${{ steps.deploy.outputs.deploy_url }}
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+      - name: Notify Slack - Failure
+        if: ${{ failure() && secrets.SLACK_BOT_TOKEN != '' }}
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          channel-id: ${{ secrets.SLACK_BK_USER_ID }}
+          slack-message: |
+            :rotating_light: *배포 실패*
+            브랜치: `main`
+            커밋: `${{ github.sha }}`
+            로그: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Actions 로그 확인>
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}

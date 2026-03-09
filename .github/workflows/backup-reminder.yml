@@ -1,0 +1,32 @@
+name: Monthly Backup Reminder
+
+on:
+  schedule:
+    - cron: '0 0 1 * *'  # 매월 1일 UTC 00:00 (KST 09:00)
+
+permissions: {}
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Send backup reminder to BK
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          SLACK_BK_USER_ID: ${{ secrets.SLACK_BK_USER_ID }}
+        run: |
+          # Slack 시크릿 미설정 시 건너뜀
+          if [ -z "$SLACK_BOT_TOKEN" ] || [ -z "$SLACK_BK_USER_ID" ]; then
+            echo "Slack 시크릿 미설정 - 건너뜀"
+            exit 0
+          fi
+
+          MONTH=$(date +%m월)
+          curl -s -X POST https://slack.com/api/chat.postMessage \
+            -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"channel\": \"$SLACK_BK_USER_ID\",
+              \"text\": \":rotating_light: *${MONTH} 백업 검증 리마인더*\n\n:white_check_mark: Supabase 백업 날짜 확인\n:white_check_mark: GitHub 레포 접근 확인\n:white_check_mark: .env ↔ 1Password 동기화\n:white_check_mark: Neon Console 백업 확인 (Stack B)\n:white_check_mark: R2 Storage 사용량 확인 (Stack B)\n:white_check_mark: 만료 예정 토큰 확인\n\n상세: vault/guides/BACKUP_STRATEGY.md §6\n\n:clipboard: *토큰 만료 점검*\n• [ ] Slack Bot Token 만료 확인\n• [ ] Supabase API Keys 로테이션 확인\n• [ ] GitHub PAT 만료일 확인 (사용 중인 경우)\n• [ ] Sentry DSN 유효성 확인\n• 참고: vault/policies/TOKEN_MANAGEMENT.md\n\n:moneybag: *비용 모니터링 점검*\n• [ ] Vercel 사용량 확인 (Free tier 한도)\n• [ ] Supabase 사용량 확인 (Free tier 한도)\n• [ ] GitHub Actions 분 수 확인 (2000분/월 중 사용량)\n• [ ] AI API 비용 확인 (Claude/기타)\n• 참고: vault/guides/COST_MONITORING.md\n\n:card_file_box: *로그 정리 리마인더*\n• [ ] 90일 이전 활동 로그 정리 (ops/retrospectives/.daily/)\n• [ ] 90일 이전 JSONL 파일 확인 및 삭제\n• 정책: vault/intelligence/LEARNING_PROPAGATION.md §보존 정책\"
+            }"

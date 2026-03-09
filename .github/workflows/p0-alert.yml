@@ -1,0 +1,26 @@
+# NOTE: Slack skip 의도적 미적용 — P0 알림 실패 시 워크플로우 실패로 가시화 (S-5)
+name: P0 Alert
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  issues: read
+
+jobs:
+  p0-alert:
+    if: github.event.label.name == 'p0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Send Slack DM
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          channel-id: ${{ secrets.SLACK_BK_USER_ID }}
+          slack-message: |
+            🚨 *P0 긴급 이슈*
+            이슈: <${{ github.event.issue.html_url }}|#${{ github.event.issue.number }}>
+            제목: ${{ github.event.issue.title }}
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}

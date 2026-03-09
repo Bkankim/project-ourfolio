@@ -1,0 +1,43 @@
+# PR 파일 경로 기반 자동 라벨링 규칙
+# https://github.com/actions/labeler
+
+area:dev:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'app/**'
+      - 'components/**'
+      - 'lib/**'
+      - 'src/**'
+      - 'supabase/**'
+      - 'drizzle/**'
+      - '*.ts'
+      - '*.tsx'
+      - '*.js'
+      - '*.jsx'
+
+ci:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '.github/**'
+
+dependencies:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+
+feature:ai:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'ai/**'
+      - 'ml/**'
+      - 'evals/**'
+      - 'lib/ai/**'
+      - 'src/ai/**'
+      - 'app/api/ai/**'
+
+docs:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '*.md'
+      - 'docs/**'
