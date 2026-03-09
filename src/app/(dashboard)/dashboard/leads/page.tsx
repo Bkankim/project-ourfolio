@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useI18n } from "@/lib/i18n";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LeadList } from "@/components/leads/lead-list";
@@ -12,18 +12,13 @@ export default function LeadsPage() {
   const [loading, setLoading] = useState(true);
   const [budgetFilter, setBudgetFilter] = useState("all");
 
-  const fetchLeads = useCallback(async () => {
-    const res = await fetch("/api/leads");
-    if (res.ok) {
-      const data = await res.json();
-      setLeads(data.leads);
-    }
-    setLoading(false);
-  }, []);
-
   useEffect(() => {
-    fetchLeads();
-  }, [fetchLeads]);
+    fetch("/api/leads")
+      .then((res) => (res.ok ? res.json() : Promise.reject()))
+      .then((data) => setLeads(data.leads))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
 
   const handleToggleRead = async (id: string, isRead: boolean) => {
     const res = await fetch(`/api/leads/${id}`, {

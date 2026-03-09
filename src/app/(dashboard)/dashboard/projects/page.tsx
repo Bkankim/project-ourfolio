@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useI18n } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -17,18 +17,21 @@ export default function ProjectsPage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
 
-  const fetchProjects = useCallback(async () => {
+  const fetchProjects = async () => {
     const res = await fetch("/api/projects");
     if (res.ok) {
       const data = await res.json();
       setProjects(data.projects);
     }
-    setLoading(false);
-  }, []);
+  };
 
   useEffect(() => {
-    fetchProjects();
-  }, [fetchProjects]);
+    fetch("/api/projects")
+      .then((res) => (res.ok ? res.json() : Promise.reject()))
+      .then((data) => setProjects(data.projects))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
 
   const handleEdit = (project: Project) => {
     setEditingProject(project);
@@ -132,6 +135,7 @@ export default function ProjectsPage() {
       )}
 
       <ProjectDialog
+        key={editingProject?.id ?? "new"}
         open={dialogOpen}
         onOpenChange={setDialogOpen}
         project={editingProject}

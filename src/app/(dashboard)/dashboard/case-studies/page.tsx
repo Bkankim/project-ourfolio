@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useI18n } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -17,18 +17,21 @@ export default function CaseStudiesPage() {
   const [view, setView] = useState<"list" | "form">("list");
   const [editing, setEditing] = useState<CaseStudy | null>(null);
 
-  const fetchItems = useCallback(async () => {
+  const fetchItems = async () => {
     const res = await fetch("/api/case-studies");
     if (res.ok) {
       const data = await res.json();
       setItems(data.caseStudies);
     }
-    setLoading(false);
-  }, []);
+  };
 
   useEffect(() => {
-    fetchItems();
-  }, [fetchItems]);
+    fetch("/api/case-studies")
+      .then((res) => (res.ok ? res.json() : Promise.reject()))
+      .then((data) => setItems(data.caseStudies))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
 
   const handleEdit = (item: CaseStudy) => {
     setEditing(item);

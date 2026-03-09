@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -52,36 +52,15 @@ export function ProjectDialog({
 }: ProjectDialogProps) {
   const { t } = useI18n();
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
-  const [tags, setTags] = useState<string[]>([]);
+  const [title, setTitle] = useState(project?.title ?? "");
+  const [description, setDescription] = useState(project?.description ?? "");
+  const [category, setCategory] = useState(project?.category ?? "");
+  const [tags, setTags] = useState<string[]>(project?.tags ?? []);
   const [tagInput, setTagInput] = useState("");
-  const [externalLink, setExternalLink] = useState("");
-  const [featured, setFeatured] = useState(false);
-  const [imageUrl, setImageUrl] = useState("");
+  const [externalLink, setExternalLink] = useState(project?.externalLink ?? "");
+  const [featured, setFeatured] = useState(project?.featured ?? false);
+  const [imageUrl, setImageUrl] = useState(project?.imageUrl ?? "");
   const [uploading, setUploading] = useState(false);
-
-  useEffect(() => {
-    if (project) {
-      setTitle(project.title);
-      setDescription(project.description ?? "");
-      setCategory(project.category ?? "");
-      setTags(project.tags ?? []);
-      setExternalLink(project.externalLink ?? "");
-      setFeatured(project.featured);
-      setImageUrl(project.imageUrl ?? "");
-    } else {
-      setTitle("");
-      setDescription("");
-      setCategory("");
-      setTags([]);
-      setExternalLink("");
-      setFeatured(false);
-      setImageUrl("");
-    }
-    setTagInput("");
-  }, [project, open]);
 
   const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && tagInput.trim()) {
