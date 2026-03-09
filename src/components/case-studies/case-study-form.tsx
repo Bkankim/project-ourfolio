@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,30 +35,17 @@ const PROFESSION_OPTIONS: ProfessionTemplate[] = [
 export function CaseStudyForm({ caseStudy, onSave, onCancel }: CaseStudyFormProps) {
   const { t } = useI18n();
 
-  const [title, setTitle] = useState("");
-  const [clientName, setClientName] = useState("");
-  const [professionTemplate, setProfessionTemplate] = useState<ProfessionTemplate>("dev");
-  const [problem, setProblem] = useState("");
-  const [solution, setSolution] = useState("");
-  const [result, setResult] = useState("");
-  const [metrics, setMetrics] = useState<Metric[]>([]);
-  const [coverImageUrl, setCoverImageUrl] = useState("");
+  const [title, setTitle] = useState(caseStudy?.title ?? "");
+  const [clientName, setClientName] = useState(caseStudy?.clientName ?? "");
+  const [professionTemplate, setProfessionTemplate] = useState<ProfessionTemplate>(
+    (caseStudy?.professionTemplate as ProfessionTemplate) ?? "dev"
+  );
+  const [problem, setProblem] = useState(caseStudy?.problem ?? "");
+  const [solution, setSolution] = useState(caseStudy?.solution ?? "");
+  const [result, setResult] = useState(caseStudy?.result ?? "");
+  const [metrics, setMetrics] = useState<Metric[]>(caseStudy?.metrics ?? []);
+  const [coverImageUrl, setCoverImageUrl] = useState(caseStudy?.coverImageUrl ?? "");
   const [uploading, setUploading] = useState(false);
-
-  useEffect(() => {
-    if (caseStudy) {
-      setTitle(caseStudy.title);
-      setClientName(caseStudy.clientName ?? "");
-      setProfessionTemplate(
-        (caseStudy.professionTemplate as ProfessionTemplate) ?? "dev"
-      );
-      setProblem(caseStudy.problem ?? "");
-      setSolution(caseStudy.solution ?? "");
-      setResult(caseStudy.result ?? "");
-      setMetrics(caseStudy.metrics ?? []);
-      setCoverImageUrl(caseStudy.coverImageUrl ?? "");
-    }
-  }, [caseStudy]);
 
   const placeholderKey = (
     field: "problem" | "solution" | "result"

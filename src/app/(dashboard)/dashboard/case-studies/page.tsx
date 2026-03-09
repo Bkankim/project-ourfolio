@@ -80,6 +80,7 @@ export default function CaseStudiesPage() {
   if (view === "form") {
     return (
       <CaseStudyForm
+        key={editing?.id ?? "new"}
         caseStudy={editing}
         onSave={handleSave}
         onCancel={() => {

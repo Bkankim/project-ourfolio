@@ -26,6 +26,7 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- reset mobile menu on navigation
   useEffect(() => { setMobileOpen(false); }, [pathname]);
 
   const displayName = getUserDisplayName(profile?.fullName, user?.email);
