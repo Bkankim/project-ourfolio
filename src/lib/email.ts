@@ -34,7 +34,7 @@ export async function sendLeadNotification(params: LeadNotificationParams) {
   await resend.emails.send({
     from,
     to: params.ownerEmail,
-    subject: `New lead from ${params.senderName}`,
+    subject: `New lead from ${name}`,
     html: `
       <h2>New Lead Received</h2>
       <p>Hi ${owner},</p>

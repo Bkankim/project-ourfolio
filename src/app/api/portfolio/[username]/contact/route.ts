@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { after } from "next/server";
 import { db } from "@/db";
 import { profiles, leads } from "@/db/schema";
 import { eq, sql } from "drizzle-orm";
@@ -51,25 +52,27 @@ export async function POST(
     })
     .returning();
 
-  // Fire-and-forget: DB query + email notification don't block the response
-  void (async () => {
-    const ownerRow = await db
-      .execute(sql`SELECT email, name FROM "user" WHERE id = ${profile.userId} LIMIT 1`);
-    const owner = ownerRow.rows[0] as { email: string; name: string } | undefined;
-    if (!owner?.email) return;
+  // Run after response — guaranteed by Next.js runtime (won't be killed on serverless)
+  after(async () => {
+    try {
+      const ownerRow = await db
+        .execute(sql`SELECT email, name FROM "user" WHERE id = ${profile.userId} LIMIT 1`);
+      const owner = ownerRow.rows[0] as { email: string; name: string } | undefined;
+      if (!owner?.email) return;
 
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
-    await sendLeadNotification({
-      ownerEmail: owner.email,
-      ownerName: owner.name ?? profile.fullName ?? username,
-      senderName: parsed.data.senderName,
-      senderEmail: parsed.data.senderEmail,
-      message: parsed.data.message ?? null,
-      budgetRange: parsed.data.budgetRange ?? null,
-      portfolioUrl: `${appUrl}/${username}`,
-    });
-  })().catch(() => {
-    // Email failure is non-critical — lead is already saved
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+      await sendLeadNotification({
+        ownerEmail: owner.email,
+        ownerName: owner.name ?? profile.fullName ?? username,
+        senderName: parsed.data.senderName,
+        senderEmail: parsed.data.senderEmail,
+        message: parsed.data.message ?? null,
+        budgetRange: parsed.data.budgetRange ?? null,
+        portfolioUrl: `${appUrl}/${username}`,
+      });
+    } catch (err) {
+      console.error("[lead-email] Failed to send notification:", err);
+    }
   });
 
   return NextResponse.json({ lead }, { status: 201 });
