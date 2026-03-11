@@ -1,4 +1,4 @@
-name: Deploy to Vercel
+name: Deploy to Vercel (Mirror)
 
 on:
   push:
@@ -11,93 +11,72 @@ concurrency:
   group: deploy-${{ github.ref }}
   cancel-in-progress: false
 
-env:
-  NODE_VERSION: '22'
-
 jobs:
-  deploy:
+  mirror:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-    environment: production
-    env:
-      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+    timeout-minutes: 5
     steps:
-      - name: Preflight — check required secrets
-        run: |
-          if [ -z "$VERCEL_TOKEN" ]; then
-            echo "::error::VERCEL_TOKEN is required for deploy. Set it in repository secrets."
-            exit 1
-          fi
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
         with:
-          version: 9
+          fetch-depth: 0
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Install Vercel CLI
-        run: pnpm add -g vercel
-
-      - name: Pull Vercel Environment
-        run: vercel pull --yes --environment=production --token=$VERCEL_TOKEN
-
-      - name: Build
-        run: vercel build --prod --token=$VERCEL_TOKEN
-
-      - name: Deploy
-        id: deploy
+      - name: Setup SSH
         run: |
-          url=$(vercel deploy --prebuilt --prod --archive=tgz --token=$VERCEL_TOKEN)
-          echo "deploy_url=$url" >> $GITHUB_OUTPUT
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Mirror to personal repo
+        run: |
+          git remote add mirror git@github.com:Bkankim/project-ourfolio.git
+          GIT_SSH_COMMAND="ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes" git push mirror master --force
+        # Vercel Git Integration on personal repo auto-deploys
+
+  health-check:
+    needs: mirror
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Wait for Vercel build
+        run: sleep 60
 
       - name: Health Check
         run: |
           CHECK_URL="https://ourfolio.bkan.dev"
-          for i in 1 2 3; do
+          for i in 1 2 3 4 5; do
             STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$CHECK_URL" || true)
             if [ "$STATUS" -ge 200 ] && [ "$STATUS" -lt 500 ]; then
               echo "Health check passed (HTTP $STATUS)"
               exit 0
             fi
-            echo "Attempt $i: HTTP $STATUS, retrying in 10s..."
-            sleep 10
+            echo "Attempt $i: HTTP $STATUS, retrying in 15s..."
+            sleep 15
           done
-          echo "ERROR: Health check failed after 3 attempts (HTTP $STATUS)"
+          echo "ERROR: Health check failed after 5 attempts (HTTP $STATUS)"
           exit 1
 
       - name: Notify Slack - Success
-        if: ${{ env.SLACK_BOT_TOKEN != '' }}
+        if: ${{ secrets.SLACK_BOT_TOKEN != '' }}
         uses: slackapi/slack-github-action@v1.24.0
         with:
           channel-id: ${{ secrets.SLACK_DEPLOY_CHANNEL }}
           slack-message: |
             :rocket: *배포 완료*
-            브랜치: `main`
+            브랜치: `master`
             커밋: `${{ github.sha }}`
-            URL: ${{ steps.deploy.outputs.deploy_url }}
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
       - name: Notify Slack - Failure
-        if: ${{ failure() && env.SLACK_BOT_TOKEN != '' }}
+        if: ${{ failure() && secrets.SLACK_BOT_TOKEN != '' }}
         uses: slackapi/slack-github-action@v1.24.0
         with:
           channel-id: ${{ secrets.SLACK_BK_USER_ID }}
           slack-message: |
             :rotating_light: *배포 실패*
-            브랜치: `main`
+            브랜치: `master`
             커밋: `${{ github.sha }}`
             로그: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Actions 로그 확인>
         env:
