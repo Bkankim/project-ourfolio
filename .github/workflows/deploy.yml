@@ -59,12 +59,12 @@ jobs:
       - name: Deploy
         id: deploy
         run: |
-          url=$(vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN)
+          url=$(vercel deploy --prebuilt --prod --archive=tgz --token=$VERCEL_TOKEN)
           echo "deploy_url=$url" >> $GITHUB_OUTPUT
 
       - name: Health Check
         run: |
-          CHECK_URL="https://outfolio.bkan.dev"
+          CHECK_URL="https://ourfolio.bkan.dev"
           for i in 1 2 3; do
             STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$CHECK_URL" || true)
             if [ "$STATUS" -ge 200 ] && [ "$STATUS" -lt 500 ]; then
