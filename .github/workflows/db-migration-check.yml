@@ -1,0 +1,55 @@
+name: DB Migration Check
+
+on:
+  pull_request:
+    paths:
+      - 'src/db/schema.ts'
+      - 'drizzle/**'
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: '22'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check schema drift
+        run: |
+          _rc=0
+          pnpm db:generate --name=_drift_check 2>&1 || _rc=$?
+          if [ "$_rc" -ne 0 ]; then
+            echo "::error::Schema generation failed (exit $_rc). Fix schema errors before merging."
+            exit 1
+          fi
+          if git diff --quiet drizzle/; then
+            echo "✅ Schema and migrations are in sync."
+          else
+            echo "::error::Schema drift detected. Run 'pnpm db:generate' locally and commit the migration."
+            git diff drizzle/
+            exit 1
+          fi
+
+      - name: Cleanup drift check
+        if: always()
+        run: git checkout -- drizzle/ 2>/dev/null || true
