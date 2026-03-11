@@ -15,6 +15,8 @@ jobs:
   mirror:
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    env:
+      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -32,6 +34,16 @@ jobs:
         run: |
           git remote add mirror git@github.com:Bkankim/project-ourfolio.git
           GIT_SSH_COMMAND="ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes" git push mirror master --force
+
+      - name: Notify Slack - Mirror Failure
+        if: failure() && env.SLACK_BOT_TOKEN != ''
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          channel-id: ${{ secrets.SLACK_BK_USER_ID }}
+          slack-message: |
+            :rotating_light: *미러 실패* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|로그>
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
   health-check:
     needs: mirror

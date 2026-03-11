@@ -26,9 +26,17 @@ export default function CaseStudiesPage() {
   };
 
   useEffect(() => {
-    fetchItems()
-      .catch(() => {})
+    const controller = new AbortController();
+    fetch("/api/case-studies", { signal: controller.signal })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data) setItems(data.caseStudies);
+      })
+      .catch((err) => {
+        if (err.name === "AbortError") return;
+      })
       .finally(() => setLoading(false));
+    return () => controller.abort();
   }, []);
 
   const handleEdit = (item: CaseStudy) => {

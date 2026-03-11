@@ -15,14 +15,6 @@ jobs:
     steps:
       - uses: google-github-actions/release-please-action@v4
         with:
-          release-type: node
           token: ${{ secrets.GITHUB_TOKEN }}
-          changelog-types: |
-            [
-              {"type": "feat", "section": "✨ 새로운 기능", "hidden": false},
-              {"type": "fix", "section": "🐛 버그 수정", "hidden": false},
-              {"type": "perf", "section": "⚡ 성능 개선", "hidden": false},
-              {"type": "refactor", "section": "♻️ 리팩토링", "hidden": false},
-              {"type": "docs", "section": "📝 문서", "hidden": false},
-              {"type": "chore", "section": "🔧 기타", "hidden": true}
-            ]
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json

@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n";
+import Image from "next/image";
 import { Pencil, Trash2, BarChart3 } from "lucide-react";
 import type { CaseStudyClient as CaseStudy, ProfessionTemplate } from "@/types/portfolio";
 import { PROFESSION_LABEL_MAP } from "@/types/portfolio";
@@ -23,11 +24,13 @@ export function CaseStudyList({ items, onEdit, onDelete }: CaseStudyListProps) {
         <Card key={item.id} className="overflow-hidden">
           <div className="flex">
             {item.coverImageUrl && (
-              <div className="w-40 shrink-0 overflow-hidden bg-muted hidden sm:block">
-                <img
+              <div className="w-40 shrink-0 overflow-hidden bg-muted hidden sm:block relative">
+                <Image
                   src={item.coverImageUrl}
                   alt={item.title}
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="160px"
+                  className="object-cover"
                 />
               </div>
             )}

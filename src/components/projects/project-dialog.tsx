@@ -23,6 +23,7 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { useI18n } from "@/lib/i18n";
 import { uploadFile } from "@/lib/upload-file";
+import Image from "next/image";
 import { X, Upload } from "lucide-react";
 import type { ProjectClient as Project } from "@/types/portfolio";
 
@@ -169,11 +170,15 @@ export function ProjectDialog({
           <div className="space-y-2">
             <Label>{t("projectImage")}</Label>
             {imageUrl && (
-              <img
-                src={imageUrl}
-                alt="Preview"
-                className="rounded-lg max-h-32 object-cover"
-              />
+              <div className="relative h-32 w-full">
+                <Image
+                  src={imageUrl}
+                  alt="Preview"
+                  fill
+                  sizes="(max-width: 640px) 100vw, 576px"
+                  className="rounded-lg object-cover"
+                />
+              </div>
             )}
             <label className="flex items-center gap-2 cursor-pointer text-sm text-muted-foreground hover:text-foreground transition-colors">
               <Upload className="h-4 w-4" />

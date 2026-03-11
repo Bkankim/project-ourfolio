@@ -64,8 +64,6 @@ const translations = {
     footerAbout: "소개",
 
     // Auth
-    authTitle: "OurFolio에 오신 것을 환영합니다",
-    authDesc: "포트폴리오를 관리하려면 로그인하세요",
     loginTitle: "다시 오신 것을 환영합니다",
     loginDesc: "계정에 로그인하세요",
     signupTitle: "계정 만들기",
@@ -303,8 +301,6 @@ const translations = {
     footerContact: "Contact",
     footerAbout: "About",
 
-    authTitle: "Welcome to OurFolio",
-    authDesc: "Sign in to manage your portfolio",
     loginTitle: "Welcome back",
     loginDesc: "Sign in to your account",
     signupTitle: "Create an account",

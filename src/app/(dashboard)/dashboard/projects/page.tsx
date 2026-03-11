@@ -26,9 +26,17 @@ export default function ProjectsPage() {
   };
 
   useEffect(() => {
-    fetchProjects()
-      .catch(() => {})
+    const controller = new AbortController();
+    fetch("/api/projects", { signal: controller.signal })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data) setProjects(data.projects);
+      })
+      .catch((err) => {
+        if (err.name === "AbortError") return;
+      })
       .finally(() => setLoading(false));
+    return () => controller.abort();
   }, []);
 
   const handleEdit = (project: Project) => {

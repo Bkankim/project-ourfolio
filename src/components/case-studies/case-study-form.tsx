@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select";
 import { useI18n } from "@/lib/i18n";
 import { uploadFile } from "@/lib/upload-file";
+import Image from "next/image";
 import { Plus, Trash2, Upload, ArrowLeft } from "lucide-react";
 import type { CaseStudyClient as CaseStudy, ProfessionTemplate, Metric } from "@/types/portfolio";
 import { PROFESSION_LABEL_MAP } from "@/types/portfolio";
@@ -205,11 +206,15 @@ export function CaseStudyForm({ caseStudy, onSave, onCancel }: CaseStudyFormProp
         <div className="space-y-2">
           <Label>{t("coverImage")}</Label>
           {coverImageUrl && (
-            <img
-              src={coverImageUrl}
-              alt="Cover"
-              className="rounded-lg max-h-32 object-cover"
-            />
+            <div className="relative h-32 w-full">
+              <Image
+                src={coverImageUrl}
+                alt="Cover"
+                fill
+                sizes="(max-width: 768px) 100vw, 672px"
+                className="rounded-lg object-cover"
+              />
+            </div>
           )}
           <label className="flex items-center gap-2 cursor-pointer text-sm text-muted-foreground hover:text-foreground transition-colors">
             <Upload className="h-4 w-4" />

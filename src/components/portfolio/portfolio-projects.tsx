@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n";
+import Image from "next/image";
 import { ExternalLink } from "lucide-react";
 import type { TemplateStyle } from "@/components/portfolio/template-styles";
 
@@ -41,11 +42,13 @@ export function PortfolioProjects({ projects, style }: PortfolioProjectsProps) {
             className={`rounded-xl overflow-hidden ${style.card} transition-transform hover:scale-[1.02]`}
           >
             {project.imageUrl && (
-              <div className="aspect-video overflow-hidden">
-                <img
+              <div className="aspect-video overflow-hidden relative">
+                <Image
                   src={project.imageUrl}
                   alt={project.title}
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 640px) 100vw, 50vw"
+                  className="object-cover"
                 />
               </div>
             )}

@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n";
+import Image from "next/image";
 import { Pencil, Trash2, Star, ArrowUp, ArrowDown, ExternalLink } from "lucide-react";
 import type { ProjectClient as Project } from "@/types/portfolio";
 
@@ -29,11 +30,13 @@ export function ProjectGrid({
       {projects.map((project, idx) => (
         <Card key={project.id} className="group relative overflow-hidden">
           {project.imageUrl && (
-            <div className="aspect-video overflow-hidden bg-muted">
-              <img
+            <div className="aspect-video overflow-hidden bg-muted relative">
+              <Image
                 src={project.imageUrl}
                 alt={project.title}
-                className="w-full h-full object-cover"
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="object-cover"
               />
             </div>
           )}
