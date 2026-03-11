@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/stale@v9
+      - uses: actions/stale@v10
         with:
           stale-issue-message: |
             ⏰ 이 이슈는 30일 동안 활동이 없어 `stale`로 표시되었습니다.
