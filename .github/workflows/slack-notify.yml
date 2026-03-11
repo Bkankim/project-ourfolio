@@ -21,7 +21,7 @@ jobs:
     steps:
       - name: PR Opened
         if: ${{ github.event.action == 'opened' && env.SLACK_BOT_TOKEN != '' }}
-        uses: slackapi/slack-github-action@v1.24.0
+        uses: slackapi/slack-github-action@v2.1.1
         with:
           channel-id: ${{ secrets.SLACK_DEV_CHANNEL }}
           slack-message: |
@@ -34,7 +34,7 @@ jobs:
 
       - name: PR Merged
         if: ${{ github.event.action == 'closed' && github.event.pull_request.merged == true && env.SLACK_BOT_TOKEN != '' }}
-        uses: slackapi/slack-github-action@v1.24.0
+        uses: slackapi/slack-github-action@v2.1.1
         with:
           channel-id: ${{ secrets.SLACK_DEV_CHANNEL }}
           slack-message: |
@@ -53,7 +53,7 @@ jobs:
     steps:
       - name: Release Published
         if: ${{ env.SLACK_BOT_TOKEN != '' }}
-        uses: slackapi/slack-github-action@v1.24.0
+        uses: slackapi/slack-github-action@v2.1.1
         with:
           channel-id: ${{ secrets.SLACK_DEPLOY_CHANNEL }}
           slack-message: |
