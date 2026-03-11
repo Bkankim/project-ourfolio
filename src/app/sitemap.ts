@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next";
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://outfolio.bkan.dev";
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://ourfolio.bkan.dev";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: BASE_URL, lastModified: new Date() },
-    { url: `${BASE_URL}/auth`, lastModified: new Date() },
+    { url: `${BASE_URL}/login`, lastModified: new Date() },
+    { url: `${BASE_URL}/signup`, lastModified: new Date() },
   ];
 }

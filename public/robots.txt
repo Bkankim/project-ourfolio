@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://outfolio.bkan.dev/sitemap.xml
+Sitemap: https://ourfolio.bkan.dev/sitemap.xml

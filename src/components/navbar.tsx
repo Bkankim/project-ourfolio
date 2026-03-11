@@ -72,12 +72,12 @@ export function Navbar() {
             </div>
           ) : (
             <>
-              <Link href="/auth" className="hidden md:inline-flex">
+              <Link href="/login" className="hidden md:inline-flex">
                 <Button variant="ghost" size="sm" className="rounded-lg">
                   {t("login")}
                 </Button>
               </Link>
-              <Link href="/auth" className="hidden md:inline-flex">
+              <Link href="/signup" className="hidden md:inline-flex">
                 <Button size="sm" className="rounded-lg">
                   {t("signup")}
                 </Button>
@@ -109,12 +109,12 @@ export function Navbar() {
           ))}
           {!user && (
             <div className="pt-2 flex gap-2">
-              <Link href="/auth" className="flex-1" onClick={() => setMobileOpen(false)}>
+              <Link href="/login" className="flex-1" onClick={() => setMobileOpen(false)}>
                 <Button variant="outline" size="sm" className="w-full rounded-lg">
                   {t("login")}
                 </Button>
               </Link>
-              <Link href="/auth" className="flex-1" onClick={() => setMobileOpen(false)}>
+              <Link href="/signup" className="flex-1" onClick={() => setMobileOpen(false)}>
                 <Button size="sm" className="w-full rounded-lg">
                   {t("signup")}
                 </Button>

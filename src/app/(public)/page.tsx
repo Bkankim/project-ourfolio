@@ -40,7 +40,7 @@ export default function HomePage() {
           {t("heroDesc")}
         </p>
         <div className="mt-8 flex flex-col sm:flex-row items-center gap-4">
-          <Link href="/auth">
+          <Link href="/signup">
             <Button size="lg" className="rounded-xl gap-2">
               {t("getStarted")} <ArrowRight className="h-4 w-4" />
             </Button>
@@ -139,7 +139,7 @@ export default function HomePage() {
           <FadeIn>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("ctaTitle")}</h2>
             <p className="text-muted-foreground mb-8">{t("ctaDesc")}</p>
-            <Link href="/auth">
+            <Link href="/signup">
               <Button size="lg" className="rounded-xl gap-2">
                 {t("ctaButton")} <ArrowRight className="h-4 w-4" />
               </Button>
