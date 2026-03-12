@@ -1,8 +1,10 @@
 "use client";
 
+import type { R2Folder } from "@/lib/r2";
+
 export async function uploadFile(
   file: File,
-  folder: "projects" | "case-studies" | "avatars"
+  folder: R2Folder
 ): Promise<string | null> {
   const formData = new FormData();
   formData.append("file", file);

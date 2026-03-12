@@ -1,10 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getAuthSession, handleApiError } from "@/lib/auth-guard";
-import { uploadImage } from "@/lib/r2";
+import { uploadImage, R2_FOLDERS } from "@/lib/r2";
 
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 const MAX_SIZE = 5 * 1024 * 1024; // 5MB
-const ALLOWED_FOLDERS = ["projects", "case-studies", "avatars"] as const;
 
 export async function POST(request: NextRequest) {
   try {
@@ -34,7 +33,7 @@ export async function POST(request: NextRequest) {
 
     if (
       !folder ||
-      !ALLOWED_FOLDERS.includes(folder as (typeof ALLOWED_FOLDERS)[number])
+      !R2_FOLDERS.includes(folder as (typeof R2_FOLDERS)[number])
     ) {
       return NextResponse.json(
         { error: "Invalid folder. Allowed: projects, case-studies, avatars" },

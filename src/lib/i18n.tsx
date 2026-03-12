@@ -265,6 +265,7 @@ const translations = {
     consentCrossBorder: "개인정보 국외 이전에 동의합니다",
     consentRequired: "[필수]",
     consentIncomplete: "동의 항목을 모두 체크해주세요.",
+    consentRecordFailed: "동의 기록 저장에 실패했습니다. 다시 시도해주세요.",
 
     // Account Management
     deleteAccount: "계정 삭제",
@@ -521,6 +522,7 @@ const translations = {
     consentCrossBorder: "I agree to the international transfer of personal data",
     consentRequired: "[Required]",
     consentIncomplete: "Please check all required consent items.",
+    consentRecordFailed: "Failed to save consent record. Please try again.",
 
     // Account Management
     deleteAccount: "Delete Account",

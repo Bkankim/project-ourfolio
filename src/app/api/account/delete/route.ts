@@ -4,7 +4,7 @@ import { profiles } from "@/db/schema";
 import { eq, sql } from "drizzle-orm";
 import { getAuthUser, handleApiError } from "@/lib/auth-guard";
 import { rateLimit, rateLimitResponse, getClientIp } from "@/lib/rate-limit";
-import { listObjects, deleteObjects } from "@/lib/r2";
+import { listObjects, deleteObjects, R2_FOLDERS } from "@/lib/r2";
 
 export async function POST(request: NextRequest) {
   try {
@@ -21,22 +21,22 @@ export async function POST(request: NextRequest) {
       .where(eq(profiles.userId, userId))
       .limit(1);
 
-    // 2. Delete R2 images (user-specific prefix, before DB deletion)
+    // 2. Delete profile first (cascade: projects, case_studies, leads, analytics_events)
+    // DB before R2 — if DB fails, no images are lost on a still-active account
     if (profile) {
+      await db.delete(profiles).where(eq(profiles.id, profile.id));
+
+      // 3. R2 image cleanup (best-effort — orphaned objects are harmless)
       try {
-        const prefix = `uploads/${profile.id}/`;
-        const objects = await listObjects(prefix);
-        if (objects.length > 0) {
-          await deleteObjects(objects);
+        const prefixes = R2_FOLDERS.map((f) => `${f}/${profile.id}/`);
+        const lists = await Promise.all(prefixes.map(listObjects));
+        const allKeys = lists.flat();
+        if (allKeys.length > 0) {
+          await deleteObjects(allKeys);
         }
       } catch (err) {
         console.error("[account-delete] R2 cleanup failed:", err);
       }
-    }
-
-    // 3. Delete profiles (cascades to projects, case_studies, leads, analytics_events)
-    if (profile) {
-      await db.delete(profiles).where(eq(profiles.id, profile.id));
     }
 
     // 4. Delete BetterAuth user (cascades to session, account, consents)

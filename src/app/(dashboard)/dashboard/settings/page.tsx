@@ -140,8 +140,24 @@ export default function SettingsPage() {
         <Button
           variant="outline"
           className="gap-2"
-          onClick={() => {
-            window.open("/api/account/export", "_blank");
+          onClick={async () => {
+            try {
+              const res = await fetch("/api/account/export");
+              if (!res.ok) {
+                const data = await res.json().catch(() => ({}));
+                toast.error(data.error ?? "Export failed");
+                return;
+              }
+              const blob = await res.blob();
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = "ourfolio-export.json";
+              a.click();
+              setTimeout(() => URL.revokeObjectURL(url), 60_000);
+            } catch {
+              toast.error("Export failed");
+            }
           }}
         >
           <Download className="h-4 w-4" />

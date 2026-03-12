@@ -62,10 +62,7 @@ export default function AuthPage() {
       return;
     }
     setLoading(true);
-    const consentFlags = activeTab === "signup"
-      ? { privacy: privacyConsent, crossBorder: crossBorderConsent }
-      : undefined;
-    const { error } = await signInWithGoogle(consentFlags);
+    const { error } = await signInWithGoogle(activeTab === "signup" ? true : undefined);
     if (error) {
       setLoading(false);
       toast.error(error.message);
@@ -149,10 +146,7 @@ export default function AuthPage() {
               <form
                 onSubmit={(e) =>
                   handleAuth(e, () =>
-                    signUp(email, password, fullName, {
-                      privacy: privacyConsent,
-                      crossBorder: crossBorderConsent,
-                    }),
+                    signUp(email, password, fullName, true),
                   )
                 }
                 className="space-y-4"

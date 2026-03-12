@@ -16,6 +16,10 @@ const r2 = new S3Client({
 
 const bucket = process.env.R2_BUCKET_NAME!;
 
+/** Canonical list of R2 upload folder prefixes. */
+export const R2_FOLDERS = ["projects", "case-studies", "avatars"] as const;
+export type R2Folder = (typeof R2_FOLDERS)[number];
+
 export async function uploadImage(
   key: string,
   body: Buffer | Uint8Array,
