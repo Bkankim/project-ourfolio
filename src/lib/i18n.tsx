@@ -511,7 +511,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   const [locale, setLocale] = useState<Locale>("ko");
 
   const t = (key: TranslationKey): string => {
-    return translations[locale][key] || key;
+    return translations[locale][key] ?? key;
   };
 
   return (
