@@ -56,21 +56,26 @@ export function AppSidebar() {
           <SidebarGroupLabel>{t("menu")}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              {items.map((item) => {
+                const active = isActive(item.url);
+                return (
                 <SidebarMenuItem key={item.url}>
                   <SidebarMenuButton
-                    render={<Link href={item.url} />}
-                    isActive={isActive(item.url)}
+                    asChild
+                    isActive={active}
                     className={cn(
                       "hover:bg-muted/50",
-                      isActive(item.url) && "bg-primary/10 text-primary font-medium"
+                      active && "bg-primary/10 text-primary font-medium"
                     )}
                   >
-                    <item.icon className="h-4 w-4 shrink-0" />
-                    {!collapsed && <span>{item.title}</span>}
+                    <Link href={item.url}>
+                      <item.icon className="h-4 w-4 shrink-0" />
+                      {!collapsed && <span>{item.title}</span>}
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
-              ))}
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

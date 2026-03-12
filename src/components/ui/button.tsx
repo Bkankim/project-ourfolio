@@ -43,11 +43,15 @@ function Button({
   className,
   variant = "default",
   size = "default",
+  ref,
   ...props
 }: React.ButtonHTMLAttributes<HTMLButtonElement> &
-  VariantProps<typeof buttonVariants>) {
+  VariantProps<typeof buttonVariants> & {
+    ref?: React.Ref<HTMLButtonElement>;
+  }) {
   return (
     <button
+      ref={ref}
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}
     />
