@@ -23,7 +23,7 @@ export function useAuth() {
     wrapResult(await signUp.email({ email, password, name }), "Sign up failed");
 
   const handleSignInWithGoogle = async () =>
-    wrapResult(await signIn.social({ provider: "google" }), "Google sign in failed");
+    wrapResult(await signIn.social({ provider: "google", callbackURL: "/dashboard" }), "Google sign in failed");
 
   const handleSignOut = async () => {
     await signOut();
