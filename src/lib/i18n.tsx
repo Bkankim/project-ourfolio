@@ -264,9 +264,7 @@ const translations = {
     consentPrivacy: "개인정보 수집·이용에 동의합니다",
     consentCrossBorder: "개인정보 국외 이전에 동의합니다",
     consentRequired: "[필수]",
-    privacyPolicy: "개인정보처리방침",
-    termsOfService: "이용약관",
-    consentContactPrivacy: "개인정보 수집·이용에 동의합니다",
+    consentIncomplete: "동의 항목을 모두 체크해주세요.",
 
     // Account Management
     deleteAccount: "계정 삭제",
@@ -276,7 +274,6 @@ const translations = {
     accountDeleted: "계정이 삭제되었습니다.",
     exportData: "내 데이터 다운로드",
     exportDataDesc: "모든 데이터를 JSON 파일로 내보냅니다.",
-    dangerZone: "위험 구역",
   },
   en: {
     features: "Features",
@@ -523,9 +520,7 @@ const translations = {
     consentPrivacy: "I agree to the collection and use of personal information",
     consentCrossBorder: "I agree to the international transfer of personal data",
     consentRequired: "[Required]",
-    privacyPolicy: "Privacy Policy",
-    termsOfService: "Terms of Service",
-    consentContactPrivacy: "I agree to the collection and use of personal information",
+    consentIncomplete: "Please check all required consent items.",
 
     // Account Management
     deleteAccount: "Delete Account",
@@ -535,7 +530,6 @@ const translations = {
     accountDeleted: "Account deleted successfully.",
     exportData: "Download My Data",
     exportDataDesc: "Export all your data as a JSON file.",
-    dangerZone: "Danger Zone",
   },
 } as const;
 

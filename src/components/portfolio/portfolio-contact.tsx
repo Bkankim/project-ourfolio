@@ -53,7 +53,7 @@ export function PortfolioContact({
         senderEmail: email,
         message,
         budgetRange: budget || undefined,
-        privacyConsent: true,
+        privacyConsent,
       }),
     });
 
@@ -135,8 +135,9 @@ export function PortfolioContact({
             onCheckedChange={(v) => setPrivacyConsent(v === true)}
           />
           <label htmlFor="contact-privacy-consent" className="text-sm leading-tight">
-            <a href="/privacy" target="_blank" className="underline underline-offset-2">
-              {t("consentContactPrivacy")}
+            <span className="text-destructive font-medium">{t("consentRequired")}</span>{" "}
+            <a href="/privacy" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">
+              {t("consentPrivacy")}
             </a>
           </label>
         </div>

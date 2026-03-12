@@ -58,11 +58,14 @@ export default function AuthPage() {
 
   const handleGoogle = async () => {
     if (activeTab === "signup" && !consentComplete) {
-      toast.error("동의 항목을 모두 체크해주세요.");
+      toast.error(t("consentIncomplete"));
       return;
     }
     setLoading(true);
-    const { error } = await signInWithGoogle();
+    const consentFlags = activeTab === "signup"
+      ? { privacy: privacyConsent, crossBorder: crossBorderConsent }
+      : undefined;
+    const { error } = await signInWithGoogle(consentFlags);
     if (error) {
       setLoading(false);
       toast.error(error.message);
@@ -198,7 +201,7 @@ export default function AuthPage() {
                     <label htmlFor="privacy-consent" className="text-sm leading-tight">
                       <span className="text-destructive font-medium">{t("consentRequired")}</span>{" "}
                       <Link href="/privacy" target="_blank" className="underline underline-offset-2">
-                        {t("privacyPolicy")}
+                        {t("footerPrivacy")}
                       </Link>
                       {" "}
                       {t("consentPrivacy")}
@@ -218,7 +221,6 @@ export default function AuthPage() {
                     </label>
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    {t("termsOfService")}:{" "}
                     <Link href="/terms" target="_blank" className="underline underline-offset-2">
                       {t("footerTerms")}
                     </Link>

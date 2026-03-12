@@ -59,7 +59,12 @@ export default function PrivacyPage() {
           <h3 className="text-lg font-medium mt-4">5. Google OAuth 이용 시</h3>
           <ul className="list-disc pl-6 space-y-1">
             <li>Google 계정 이메일, 이름, 프로필 이미지 URL</li>
-            <li>OAuth 액세스 토큰 및 리프레시 토큰 (암호화 저장)</li>
+            <li>OAuth 액세스 토큰, 리프레시 토큰, ID 토큰 (보안 저장)</li>
+          </ul>
+
+          <h3 className="text-lg font-medium mt-4">6. 동의 이력</h3>
+          <ul className="list-disc pl-6 space-y-1">
+            <li>동의 유형, 정책 버전, 동의 일시</li>
           </ul>
         </section>
 

@@ -104,9 +104,13 @@ export const contactFormSchema = z.object({
   privacyConsent: z.literal(true, { message: "Privacy consent is required" }),
 });
 
+// ── Consent constants ───────────────────────────────
+export const CONSENT_TYPES = ["privacy", "cross_border", "terms"] as const;
+export const CURRENT_POLICY_VERSION = "1.0";
+
 // ── Consent record schema ───────────────────────────
 const consentItemSchema = z.object({
-  type: z.enum(["privacy", "cross_border", "terms"]),
+  type: z.enum(CONSENT_TYPES),
   policyVersion: z.string().min(1).max(20),
 });
 

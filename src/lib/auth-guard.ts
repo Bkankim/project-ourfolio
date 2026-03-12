@@ -13,7 +13,8 @@ export class AuthError extends Error {
   }
 }
 
-export async function getAuthSession() {
+/** Session-only auth check (no profile required). */
+export async function getAuthUser() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -22,7 +23,12 @@ export async function getAuthSession() {
     throw new AuthError("Unauthorized", 401);
   }
 
-  const userId = session.user.id;
+  return { session, userId: session.user.id };
+}
+
+/** Session + profile auth check (throws 404 if profile missing). */
+export async function getAuthSession() {
+  const { session, userId } = await getAuthUser();
 
   const [profile] = await db
     .select()
