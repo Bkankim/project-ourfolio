@@ -12,8 +12,8 @@ export function middleware(request: NextRequest) {
     }
   }
 
-  // Auth pages: already logged in → redirect to /dashboard
-  if (pathname === "/auth" || pathname === "/login" || pathname === "/signup") {
+  // Public pages: already logged in → redirect to /dashboard
+  if (pathname === "/" || pathname === "/auth" || pathname === "/login" || pathname === "/signup") {
     if (sessionToken) {
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }
@@ -23,5 +23,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/auth", "/login", "/signup"],
+  matcher: ["/", "/dashboard/:path*", "/auth", "/login", "/signup"],
 };
