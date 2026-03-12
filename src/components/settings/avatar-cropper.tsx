@@ -87,11 +87,11 @@ export function AvatarCropper({
 
   return (
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md" onPointerDownOutside={(e) => e.preventDefault()}>
         <DialogHeader>
           <DialogTitle>{t("cropAvatar")}</DialogTitle>
         </DialogHeader>
-        <div className="relative w-full aspect-square rounded-lg overflow-hidden bg-muted">
+        <div className="relative w-full rounded-lg overflow-hidden bg-muted" style={{ height: 340, touchAction: "none" }}>
           <Cropper
             image={imageSrc}
             crop={crop}
