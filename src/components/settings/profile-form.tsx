@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -15,6 +15,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useI18n } from "@/lib/i18n";
 import { getInitials } from "@/lib/utils";
 import { uploadFile } from "@/lib/upload-file";
+import { AvatarCropper } from "@/components/settings/avatar-cropper";
 import { Upload } from "lucide-react";
 
 interface ProfileFormProps {
@@ -58,11 +59,21 @@ export function ProfileForm({
 }: ProfileFormProps) {
   const { t } = useI18n();
   const [uploading, setUploading] = useState(false);
+  const [cropSrc, setCropSrc] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => setCropSrc(reader.result as string);
+    reader.readAsDataURL(file);
+    e.target.value = "";
+  };
+
+  const handleCropComplete = async (blob: Blob) => {
     setUploading(true);
+    const file = new File([blob], "avatar.webp", { type: "image/webp" });
     const url = await uploadFile(file, "avatars");
     if (url) setAvatarUrl(url);
     setUploading(false);
@@ -83,13 +94,21 @@ export function ProfileForm({
           <Upload className="h-4 w-4" />
           {uploading ? "..." : t("avatarUpload")}
           <input
+            ref={fileInputRef}
             type="file"
             accept="image/*"
             className="hidden"
-            onChange={handleAvatarUpload}
+            onChange={handleFileSelect}
           />
         </label>
       </div>
+
+      <AvatarCropper
+        imageSrc={cropSrc}
+        open={!!cropSrc}
+        onClose={() => setCropSrc(null)}
+        onCropComplete={handleCropComplete}
+      />
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
