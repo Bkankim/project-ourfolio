@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, FolderOpen, FileText, MessageSquare, Settings, LogOut, Briefcase } from "lucide-react";
+import { LayoutDashboard, FolderOpen, FileText, MessageSquare, Settings, LogOut } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/hooks/use-auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -47,7 +47,7 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarHeader className="border-b border-border/40 p-4">
         <Link href="/" className="flex items-center gap-2 font-bold text-lg tracking-tight">
-          <Briefcase className="h-5 w-5 shrink-0 text-primary" />
+          <img src="/ourfolio-logo.svg" alt="OurFolio" className="h-5 w-5 shrink-0" />
           {!collapsed && <span>OurFolio</span>}
         </Link>
       </SidebarHeader>

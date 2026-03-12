@@ -194,6 +194,7 @@ const translations = {
 
     // Dashboard extra
     welcomeBack: "돌아오셨군요,",
+    welcomeBackSuffix: "님",
     portfolioScore: "포트폴리오 점수",
     quickActions: "빠른 액션",
     recentLeads: "최근 리드",
@@ -429,6 +430,7 @@ const translations = {
     settings: "Settings",
 
     welcomeBack: "Welcome back,",
+    welcomeBackSuffix: "",
     portfolioScore: "Portfolio Score",
     quickActions: "Quick Actions",
     recentLeads: "Recent Leads",

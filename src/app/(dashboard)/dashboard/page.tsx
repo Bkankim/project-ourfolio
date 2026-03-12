@@ -92,7 +92,7 @@ export default function DashboardPage() {
     <div className="animate-fade-in space-y-8">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">
-          {t("welcomeBack")} {displayName}
+          {t("welcomeBack")} {displayName}{t("welcomeBackSuffix")}
         </h1>
         <p className="text-muted-foreground mt-1">{formattedDate}</p>
       </div>

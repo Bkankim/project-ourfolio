@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { Briefcase } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 
 export function Footer() {
@@ -16,7 +15,7 @@ export function Footer() {
               href="/"
               className="flex items-center gap-2 font-bold text-lg mb-3"
             >
-              <Briefcase className="h-5 w-5 text-primary" />
+              <img src="/ourfolio-logo.svg" alt="OurFolio" className="h-5 w-5" />
               <span>OurFolio</span>
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">
