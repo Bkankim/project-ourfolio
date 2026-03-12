@@ -8,6 +8,7 @@ import {
   jsonb,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
+import { user } from "./auth-schema";
 
 // ── Profiles ─────────────────────────────────────────
 export const profiles = pgTable("profiles", {
@@ -76,6 +77,7 @@ export const leads = pgTable("leads", {
   message: text("message"),
   budgetRange: text("budget_range"),
   isRead: boolean("is_read").notNull().default(false),
+  privacyConsent: boolean("privacy_consent").notNull().default(false),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
@@ -89,6 +91,17 @@ export const analyticsEvents = pgTable("analytics_events", {
   visitorId: text("visitor_id"),
   metadata: jsonb("metadata").notNull().default({}),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+// ── Consents ────────────────────────────────────────
+export const consents = pgTable("consents", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  consentType: text("consent_type").notNull(), // privacy | cross_border | terms
+  policyVersion: text("policy_version").notNull(),
+  consentedAt: timestamp("consented_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
 // ── Relations ────────────────────────────────────────

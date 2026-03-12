@@ -256,6 +256,27 @@ const translations = {
     saveSettings: "설정 저장",
     settingsSaved: "설정이 저장되었습니다.",
     slugPreview: "포트폴리오 URL",
+
+    // Legal & Consent
+    footerLegal: "법적 고지",
+    footerPrivacy: "개인정보처리방침",
+    footerTerms: "이용약관",
+    consentPrivacy: "개인정보 수집·이용에 동의합니다",
+    consentCrossBorder: "개인정보 국외 이전에 동의합니다",
+    consentRequired: "[필수]",
+    privacyPolicy: "개인정보처리방침",
+    termsOfService: "이용약관",
+    consentContactPrivacy: "개인정보 수집·이용에 동의합니다",
+
+    // Account Management
+    deleteAccount: "계정 삭제",
+    deleteAccountDesc: "계정을 삭제하면 모든 데이터가 영구적으로 삭제됩니다.",
+    deleteAccountConfirm: "정말 계정을 삭제하시겠습니까?",
+    deleteAccountFinal: "삭제하기",
+    accountDeleted: "계정이 삭제되었습니다.",
+    exportData: "내 데이터 다운로드",
+    exportDataDesc: "모든 데이터를 JSON 파일로 내보냅니다.",
+    dangerZone: "위험 구역",
   },
   en: {
     features: "Features",
@@ -494,6 +515,27 @@ const translations = {
     saveSettings: "Save Settings",
     settingsSaved: "Settings saved successfully.",
     slugPreview: "Portfolio URL",
+
+    // Legal & Consent
+    footerLegal: "Legal",
+    footerPrivacy: "Privacy Policy",
+    footerTerms: "Terms of Service",
+    consentPrivacy: "I agree to the collection and use of personal information",
+    consentCrossBorder: "I agree to the international transfer of personal data",
+    consentRequired: "[Required]",
+    privacyPolicy: "Privacy Policy",
+    termsOfService: "Terms of Service",
+    consentContactPrivacy: "I agree to the collection and use of personal information",
+
+    // Account Management
+    deleteAccount: "Delete Account",
+    deleteAccountDesc: "Deleting your account will permanently remove all your data.",
+    deleteAccountConfirm: "Are you sure you want to delete your account?",
+    deleteAccountFinal: "Delete",
+    accountDeleted: "Account deleted successfully.",
+    exportData: "Download My Data",
+    exportDataDesc: "Export all your data as a JSON file.",
+    dangerZone: "Danger Zone",
   },
 } as const;
 
@@ -511,7 +553,8 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   const [locale, setLocale] = useState<Locale>("ko");
 
   const t = (key: TranslationKey): string => {
-    return translations[locale][key] ?? key;
+    const dict = translations[locale] as Record<string, string>;
+    return dict[key] ?? key;
   };
 
   return (

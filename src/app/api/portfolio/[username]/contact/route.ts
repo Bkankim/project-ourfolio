@@ -49,6 +49,7 @@ export async function POST(
       senderEmail: parsed.data.senderEmail,
       message: parsed.data.message,
       budgetRange: parsed.data.budgetRange ?? null,
+      privacyConsent: true,
     })
     .returning();
 

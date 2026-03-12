@@ -15,6 +15,7 @@ import {
 import { useI18n } from "@/lib/i18n";
 import { trackEvent } from "@/lib/analytics";
 import { toast } from "sonner";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Send, CheckCircle } from "lucide-react";
 import type { TemplateStyle } from "@/components/portfolio/template-styles";
 import { BUDGET_OPTIONS } from "@/types/portfolio";
@@ -36,6 +37,7 @@ export function PortfolioContact({
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [budget, setBudget] = useState("");
+  const [privacyConsent, setPrivacyConsent] = useState(false);
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
 
@@ -51,6 +53,7 @@ export function PortfolioContact({
         senderEmail: email,
         message,
         budgetRange: budget || undefined,
+        privacyConsent: true,
       }),
     });
 
@@ -125,11 +128,24 @@ export function PortfolioContact({
           />
         </div>
 
+        <div className="flex items-start gap-2">
+          <Checkbox
+            id="contact-privacy-consent"
+            checked={privacyConsent}
+            onCheckedChange={(v) => setPrivacyConsent(v === true)}
+          />
+          <label htmlFor="contact-privacy-consent" className="text-sm leading-tight">
+            <a href="/privacy" target="_blank" className="underline underline-offset-2">
+              {t("consentContactPrivacy")}
+            </a>
+          </label>
+        </div>
+
         <Button
           type="submit"
           className="rounded-xl gap-2"
           style={{ backgroundColor: "var(--portfolio-primary)" }}
-          disabled={sending}
+          disabled={sending || !privacyConsent}
         >
           <Send className="h-4 w-4" />
           {sending ? "..." : t("sendMessage")}

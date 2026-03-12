@@ -8,7 +8,10 @@ import { ProfileForm } from "@/components/settings/profile-form";
 import { TemplatePicker } from "@/components/settings/template-picker";
 import { ColorSocialForm } from "@/components/settings/color-social-form";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { AccountDeletion } from "@/components/settings/account-deletion";
 import { toast } from "sonner";
+import { Download } from "lucide-react";
 import type { Template, SocialLinks } from "@/types/portfolio";
 
 export default function SettingsPage() {
@@ -127,6 +130,27 @@ export default function SettingsPage() {
           </span>
         </p>
       )}
+
+      <Separator />
+
+      {/* Data Export */}
+      <div className="rounded-xl border border-border/40 p-6 space-y-3">
+        <h3 className="text-lg font-semibold">{t("exportData")}</h3>
+        <p className="text-sm text-muted-foreground">{t("exportDataDesc")}</p>
+        <Button
+          variant="outline"
+          className="gap-2"
+          onClick={() => {
+            window.open("/api/account/export", "_blank");
+          }}
+        >
+          <Download className="h-4 w-4" />
+          {t("exportData")}
+        </Button>
+      </div>
+
+      {/* Account Deletion */}
+      <AccountDeletion />
     </div>
   );
 }

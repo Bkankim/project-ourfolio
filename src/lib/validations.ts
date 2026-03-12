@@ -9,6 +9,8 @@ const RESERVED_USERNAMES = [
   "settings",
   "login",
   "signup",
+  "privacy",
+  "terms",
 ] as const;
 
 // ── Project schemas ─────────────────────────────────
@@ -99,6 +101,17 @@ export const contactFormSchema = z.object({
   budgetRange: z
     .enum(["under-1k", "1k-5k", "5k-10k", "10k-plus"])
     .optional(),
+  privacyConsent: z.literal(true, { message: "Privacy consent is required" }),
+});
+
+// ── Consent record schema ───────────────────────────
+const consentItemSchema = z.object({
+  type: z.enum(["privacy", "cross_border", "terms"]),
+  policyVersion: z.string().min(1).max(20),
+});
+
+export const consentRecordSchema = z.object({
+  consents: z.array(consentItemSchema).min(1).max(5),
 });
 
 // ── Analytics schema ────────────────────────────────

@@ -70,6 +70,30 @@ export function Footer() {
               </li>
             </ul>
           </div>
+
+          <div>
+            <h4 className="font-semibold text-sm mb-3">
+              {t("footerLegal")}
+            </h4>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>
+                <Link
+                  href="/privacy"
+                  className="hover:text-foreground transition-colors"
+                >
+                  {t("footerPrivacy")}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/terms"
+                  className="hover:text-foreground transition-colors"
+                >
+                  {t("footerTerms")}
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
         <div className="border-t border-border/40 pt-6 text-center text-sm text-muted-foreground">
           {t("footer")}

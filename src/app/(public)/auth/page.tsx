@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
   Card,
   CardContent,
@@ -11,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Tabs,
   TabsContent,
@@ -31,6 +33,13 @@ export default function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
+  const [activeTab, setActiveTab] = useState("login");
+
+  // Consent checkboxes (signup only)
+  const [privacyConsent, setPrivacyConsent] = useState(false);
+  const [crossBorderConsent, setCrossBorderConsent] = useState(false);
+
+  const consentComplete = privacyConsent && crossBorderConsent;
 
   const handleAuth = async (
     e: React.FormEvent<HTMLFormElement>,
@@ -48,6 +57,10 @@ export default function AuthPage() {
   };
 
   const handleGoogle = async () => {
+    if (activeTab === "signup" && !consentComplete) {
+      toast.error("동의 항목을 모두 체크해주세요.");
+      return;
+    }
     setLoading(true);
     const { error } = await signInWithGoogle();
     if (error) {
@@ -70,7 +83,7 @@ export default function AuthPage() {
             variant="outline"
             className="w-full mb-6 rounded-lg gap-2"
             onClick={handleGoogle}
-            disabled={loading}
+            disabled={loading || (activeTab === "signup" && !consentComplete)}
           >
             <GoogleIcon />
             {t("continueWithGoogle")}
@@ -87,7 +100,7 @@ export default function AuthPage() {
             </div>
           </div>
 
-          <Tabs defaultValue="login" className="w-full">
+          <Tabs defaultValue="login" className="w-full" onValueChange={setActiveTab}>
             <TabsList className="grid w-full grid-cols-2 mb-6">
               <TabsTrigger value="login">{t("login")}</TabsTrigger>
               <TabsTrigger value="signup">{t("signup")}</TabsTrigger>
@@ -130,7 +143,17 @@ export default function AuthPage() {
               </form>
             </TabsContent>
             <TabsContent value="signup">
-              <form onSubmit={(e) => handleAuth(e, () => signUp(email, password, fullName))} className="space-y-4">
+              <form
+                onSubmit={(e) =>
+                  handleAuth(e, () =>
+                    signUp(email, password, fullName, {
+                      privacy: privacyConsent,
+                      crossBorder: crossBorderConsent,
+                    }),
+                  )
+                }
+                className="space-y-4"
+              >
                 <div className="space-y-2">
                   <Label htmlFor="name">{t("fullName")}</Label>
                   <Input
@@ -163,10 +186,49 @@ export default function AuthPage() {
                     required
                   />
                 </div>
+
+                {/* Consent checkboxes */}
+                <div className="space-y-3 rounded-lg border border-border/40 p-4">
+                  <div className="flex items-start gap-2">
+                    <Checkbox
+                      id="privacy-consent"
+                      checked={privacyConsent}
+                      onCheckedChange={(v) => setPrivacyConsent(v === true)}
+                    />
+                    <label htmlFor="privacy-consent" className="text-sm leading-tight">
+                      <span className="text-destructive font-medium">{t("consentRequired")}</span>{" "}
+                      <Link href="/privacy" target="_blank" className="underline underline-offset-2">
+                        {t("privacyPolicy")}
+                      </Link>
+                      {" "}
+                      {t("consentPrivacy")}
+                    </label>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <Checkbox
+                      id="cross-border-consent"
+                      checked={crossBorderConsent}
+                      onCheckedChange={(v) => setCrossBorderConsent(v === true)}
+                    />
+                    <label htmlFor="cross-border-consent" className="text-sm leading-tight">
+                      <span className="text-destructive font-medium">{t("consentRequired")}</span>{" "}
+                      <Link href="/privacy#international-transfer" target="_blank" className="underline underline-offset-2">
+                        {t("consentCrossBorder")}
+                      </Link>
+                    </label>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    {t("termsOfService")}:{" "}
+                    <Link href="/terms" target="_blank" className="underline underline-offset-2">
+                      {t("footerTerms")}
+                    </Link>
+                  </p>
+                </div>
+
                 <Button
                   className="w-full rounded-lg"
                   type="submit"
-                  disabled={loading}
+                  disabled={loading || !consentComplete}
                 >
                   {loading ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
