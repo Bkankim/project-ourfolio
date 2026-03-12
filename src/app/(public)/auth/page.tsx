@@ -25,17 +25,12 @@ import { Loader2 } from "lucide-react";
 
 export default function AuthPage() {
   const { t } = useI18n();
-  const { signIn, signUp, signInWithGoogle, user } = useAuth();
+  const { signIn, signUp, signInWithGoogle } = useAuth();
 
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
-
-  if (user) {
-    window.location.href = "/dashboard";
-    return null;
-  }
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
