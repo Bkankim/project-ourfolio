@@ -32,22 +32,13 @@ export default function AuthPage() {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleAuth = async (
+    e: React.FormEvent<HTMLFormElement>,
+    action: () => Promise<{ error: Error | null }>,
+  ) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await signIn(email, password);
-    if (error) {
-      setLoading(false);
-      toast.error(error.message);
-    } else {
-      window.location.href = "/dashboard";
-    }
-  };
-
-  const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
-    const { error } = await signUp(email, password, fullName);
+    const { error } = await action();
     if (error) {
       setLoading(false);
       toast.error(error.message);
@@ -102,7 +93,7 @@ export default function AuthPage() {
               <TabsTrigger value="signup">{t("signup")}</TabsTrigger>
             </TabsList>
             <TabsContent value="login">
-              <form onSubmit={handleLogin} className="space-y-4">
+              <form onSubmit={(e) => handleAuth(e, () => signIn(email, password))} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="email">{t("email")}</Label>
                   <Input
@@ -139,7 +130,7 @@ export default function AuthPage() {
               </form>
             </TabsContent>
             <TabsContent value="signup">
-              <form onSubmit={handleSignup} className="space-y-4">
+              <form onSubmit={(e) => handleAuth(e, () => signUp(email, password, fullName))} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="name">{t("fullName")}</Label>
                   <Input
