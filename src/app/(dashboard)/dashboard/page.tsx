@@ -10,6 +10,9 @@ import { PortfolioScore } from "@/components/dashboard/portfolio-score";
 import { QuickActions } from "@/components/dashboard/quick-actions";
 import { RecentLeads } from "@/components/dashboard/recent-leads";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertTriangle } from "lucide-react";
+import Link from "next/link";
 
 interface DashboardData {
   stats: {
@@ -100,6 +103,21 @@ export default function DashboardPage() {
       <StatsCards stats={data.stats} />
 
       <WeeklyChart dailyViews={data.dailyViews} viewsTrend={data.stats.viewsChange} />
+
+      {!profile?.username && (
+        <Alert variant="destructive" className="border-yellow-500/50 bg-yellow-500/10 text-yellow-700 dark:text-yellow-400 [&>svg]:text-yellow-600 dark:[&>svg]:text-yellow-400">
+          <AlertTriangle className="h-4 w-4" />
+          <AlertDescription className="flex items-center justify-between gap-2">
+            <span>{t("usernameRequired")}</span>
+            <Link
+              href="/dashboard/settings"
+              className="shrink-0 rounded-md bg-yellow-600 px-3 py-1 text-xs font-medium text-white hover:bg-yellow-700 transition-colors"
+            >
+              {t("goToSettings")}
+            </Link>
+          </AlertDescription>
+        </Alert>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <PortfolioScore data={data.portfolioScore} />
