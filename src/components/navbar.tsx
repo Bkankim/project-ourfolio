@@ -21,7 +21,7 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-xl">
       <div className="container flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tight">
-          <img src="/ourfolio-logo.svg" alt="OurFolio" className="h-6 w-6" />
+          <img src="/logo-120.svg" alt="OurFolio" className="h-6 w-6" />
           <span>OurFolio</span>
         </Link>
 

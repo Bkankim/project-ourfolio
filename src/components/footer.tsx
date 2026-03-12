@@ -15,7 +15,7 @@ export function Footer() {
               href="/"
               className="flex items-center gap-2 font-bold text-lg mb-3"
             >
-              <img src="/ourfolio-logo.svg" alt="OurFolio" className="h-5 w-5" />
+              <img src="/logo-120.svg" alt="OurFolio" className="h-5 w-5" />
               <span>OurFolio</span>
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">

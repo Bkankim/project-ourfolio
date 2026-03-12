@@ -47,7 +47,7 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarHeader className="border-b border-border/40 p-4">
         <Link href="/" className="flex items-center gap-2 font-bold text-lg tracking-tight">
-          <img src="/ourfolio-logo.svg" alt="OurFolio" className="h-5 w-5 shrink-0" />
+          <img src="/logo-120.svg" alt="OurFolio" className="h-5 w-5 shrink-0" />
           {!collapsed && <span>OurFolio</span>}
         </Link>
       </SidebarHeader>
