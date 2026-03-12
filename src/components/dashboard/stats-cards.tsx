@@ -1,8 +1,7 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useI18n } from "@/lib/i18n";
-import { Eye, MousePointerClick, Users } from "lucide-react";
+import { Eye, MousePointerClick, Users, TrendingUp, TrendingDown } from "lucide-react";
 
 interface StatsCardsProps {
   stats: {
@@ -21,19 +20,19 @@ export function StatsCards({ stats }: StatsCardsProps) {
 
   const cards = [
     {
-      title: t("totalViews"),
+      label: t("totalViews"),
       value: stats.views,
       change: stats.viewsChange,
       icon: Eye,
     },
     {
-      title: t("ctaClicks"),
+      label: t("ctaClicks"),
       value: stats.ctaClicks,
       change: stats.ctaChange,
       icon: MousePointerClick,
     },
     {
-      title: t("totalLeads"),
+      label: t("totalLeads"),
       value: stats.totalLeads,
       change: stats.leadsChange,
       icon: Users,
@@ -41,23 +40,35 @@ export function StatsCards({ stats }: StatsCardsProps) {
   ];
 
   return (
-    <div className="grid gap-4 sm:grid-cols-3">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
       {cards.map((c) => (
-        <Card key={c.title}>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              {c.title}
-            </CardTitle>
-            <c.icon className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{c.value}</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              {c.change >= 0 ? "+" : ""}
-              {c.change} {t("vsLastWeek")}
-            </p>
-          </CardContent>
-        </Card>
+        <div
+          key={c.label}
+          className="rounded-xl border border-border/40 bg-card p-5 flex items-center gap-4"
+        >
+          <div className="rounded-lg bg-primary/10 p-3">
+            <c.icon className="h-5 w-5 text-primary" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-xs text-muted-foreground">{c.label}</p>
+            <p className="text-2xl font-bold tracking-tight">{c.value}</p>
+          </div>
+          {c.change !== 0 && (
+            <div
+              className={`flex items-center gap-1 text-xs font-medium ${
+                c.change >= 0 ? "text-green-500" : "text-red-400"
+              }`}
+            >
+              {c.change >= 0 ? (
+                <TrendingUp className="h-3.5 w-3.5" />
+              ) : (
+                <TrendingDown className="h-3.5 w-3.5" />
+              )}
+              {c.change > 0 ? "+" : ""}
+              {c.change}%
+            </div>
+          )}
+        </div>
       ))}
     </div>
   );

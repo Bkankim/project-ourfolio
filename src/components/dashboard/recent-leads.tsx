@@ -1,9 +1,8 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useI18n } from "@/lib/i18n";
-import { formatDistanceToNow } from "date-fns";
+import { Mail } from "lucide-react";
 import type { LeadClient as Lead } from "@/types/portfolio";
 
 interface RecentLeadsProps {
@@ -14,40 +13,45 @@ export function RecentLeads({ leads }: RecentLeadsProps) {
   const { t } = useI18n();
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-sm font-medium">{t("recentLeads")}</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <div>
+      <h2 className="text-lg font-semibold mb-4">{t("recentLeads")}</h2>
+      <div className="space-y-3">
         {leads.length === 0 ? (
-          <p className="text-sm text-muted-foreground">{t("noLeadsYet")}</p>
+          <div className="rounded-xl border border-dashed border-border/60 p-8 text-center">
+            <Mail className="mx-auto h-10 w-10 text-muted-foreground/30 mb-3" />
+            <p className="text-sm text-muted-foreground">
+              {t("leadsEmpty")}
+            </p>
+          </div>
         ) : (
-          <ul className="space-y-3">
-            {leads.map((lead) => (
-              <li key={lead.id} className="flex items-start justify-between gap-3">
-                <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium truncate">{lead.senderName}</p>
-                  <p className="text-xs text-muted-foreground truncate">
-                    {lead.message}
-                  </p>
-                </div>
-                <div className="flex flex-col items-end gap-1 shrink-0">
-                  {!lead.isRead && (
-                    <Badge variant="default" className="text-xs px-1.5 py-0">
-                      {t("unread")}
-                    </Badge>
-                  )}
-                  <span className="text-xs text-muted-foreground">
-                    {formatDistanceToNow(new Date(lead.createdAt), {
-                      addSuffix: true,
-                    })}
+          leads.map((lead) => (
+            <div
+              key={lead.id}
+              className="rounded-xl border border-border/40 bg-card p-4 flex items-center justify-between gap-4"
+            >
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="font-medium text-sm">
+                    {lead.senderName}
                   </span>
+                  <Badge
+                    variant={lead.isRead ? "secondary" : "default"}
+                    className="text-[10px] px-1.5 py-0"
+                  >
+                    {lead.isRead ? t("read") : t("unread")}
+                  </Badge>
                 </div>
-              </li>
-            ))}
-          </ul>
+                <p className="text-xs text-muted-foreground truncate">
+                  {lead.message}
+                </p>
+              </div>
+              <span className="text-xs text-muted-foreground whitespace-nowrap">
+                {new Date(lead.createdAt).toLocaleDateString()}
+              </span>
+            </div>
+          ))
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

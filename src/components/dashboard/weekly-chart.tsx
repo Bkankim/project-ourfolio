@@ -1,14 +1,15 @@
 "use client";
 
 import { useMemo } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useI18n } from "@/lib/i18n";
+import { BarChart3 } from "lucide-react";
 
 interface WeeklyChartProps {
   dailyViews: { day: string; count: number }[];
+  viewsTrend?: number;
 }
 
-export function WeeklyChart({ dailyViews }: WeeklyChartProps) {
+export function WeeklyChart({ dailyViews, viewsTrend = 0 }: WeeklyChartProps) {
   const { t } = useI18n();
 
   const chartData = useMemo(() => {
@@ -29,29 +30,46 @@ export function WeeklyChart({ dailyViews }: WeeklyChartProps) {
   const max = Math.max(...chartData.map((d) => d.count), 1);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-sm font-medium">{t("last7Days")}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="flex items-end gap-2 h-32">
-          {chartData.map((d) => (
-            <div key={d.label} className="flex-1 flex flex-col items-center gap-1">
-              <span className="text-xs text-muted-foreground">{d.count}</span>
-              <div
-                className="w-full rounded-t bg-primary/80 transition-all"
-                style={{ height: `${(d.count / max) * 100}%`, minHeight: d.count > 0 ? 4 : 0 }}
-              />
-              <span className="text-xs text-muted-foreground">{d.label}</span>
-            </div>
-          ))}
-        </div>
-        {max === 1 && chartData.every((d) => d.count === 0) && (
-          <p className="text-center text-sm text-muted-foreground mt-4">
-            {t("noDataYet")}
-          </p>
+    <div className="rounded-xl border border-border/40 bg-card p-6">
+      <div className="flex items-center gap-2 mb-4">
+        <BarChart3 className="h-4 w-4 text-muted-foreground" />
+        <h2 className="text-sm font-semibold">
+          {t("totalViews")} — {t("last7Days")}
+        </h2>
+        {viewsTrend !== 0 && (
+          <span
+            className={`ml-auto text-xs font-medium ${
+              viewsTrend >= 0 ? "text-green-500" : "text-red-400"
+            }`}
+          >
+            {viewsTrend > 0 ? "+" : ""}
+            {viewsTrend}% {t("vsLastWeek")}
+          </span>
         )}
-      </CardContent>
-    </Card>
+      </div>
+      <div className="flex items-end gap-2 h-32">
+        {chartData.map((d) => (
+          <div
+            key={d.label}
+            className="flex-1 flex flex-col items-center gap-1"
+          >
+            <span className="text-[10px] text-muted-foreground font-medium">
+              {d.count > 0 ? d.count : ""}
+            </span>
+            <div
+              className="w-full rounded-t-md bg-primary/80 transition-all duration-500"
+              style={{
+                height: `${Math.max((d.count / max) * 100, d.count > 0 ? 8 : 2)}%`,
+                minHeight: d.count > 0 ? "6px" : "2px",
+                opacity: d.count > 0 ? 1 : 0.2,
+              }}
+            />
+            <span className="text-[10px] text-muted-foreground">
+              {d.label}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

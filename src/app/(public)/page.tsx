@@ -2,149 +2,158 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useI18n } from "@/lib/i18n";
-import { FileText, FolderOpen, BarChart3, MessageSquare, ArrowRight, Star, CheckCircle } from "lucide-react";
-import { FadeIn } from "@/components/fade-in";
+import { ArrowRight, BarChart3, FileText, FolderOpen, MessageSquare, Pencil, Users } from "lucide-react";
 
 export default function HomePage() {
   const { t } = useI18n();
 
   const features = [
-    { icon: FileText, title: t("feature1Title"), desc: t("feature1Desc") },
-    { icon: FolderOpen, title: t("feature2Title"), desc: t("feature2Desc") },
-    { icon: BarChart3, title: t("feature3Title"), desc: t("feature3Desc") },
-    { icon: MessageSquare, title: t("feature4Title"), desc: t("feature4Desc") },
+    { icon: FileText, title: t("feature1Title"), description: t("feature1Desc") },
+    { icon: BarChart3, title: t("feature3Title"), description: t("feature3Desc") },
+    { icon: MessageSquare, title: t("feature4Title"), description: t("feature4Desc") },
   ];
 
   const steps = [
-    { num: "01", title: t("step1Title"), desc: t("step1Desc") },
-    { num: "02", title: t("step2Title"), desc: t("step2Desc") },
-    { num: "03", title: t("step3Title"), desc: t("step3Desc") },
+    { num: 1, icon: FolderOpen, title: t("step1Title"), desc: t("step1Desc") },
+    { num: 2, icon: Pencil, title: t("step2Title"), desc: t("step2Desc") },
+    { num: 3, icon: Users, title: t("step3Title"), desc: t("step3Desc") },
   ];
+
+  const avatarInitials = ["JK", "SL", "MK", "YP", "HJ"];
 
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="relative flex flex-col items-center justify-center px-4 py-24 md:py-32 text-center">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent pointer-events-none" />
-        <Badge variant="secondary" className="mb-6 px-4 py-1.5 text-sm">
-          {t("heroBadge")}
-        </Badge>
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tight max-w-3xl">
-          {t("heroTitle1")}
-          <br />
-          <span className="text-primary">{t("heroTitle2")}</span>
-        </h1>
-        <p className="mt-6 text-lg text-muted-foreground max-w-2xl leading-relaxed">
-          {t("heroDesc")}
-        </p>
-        <div className="mt-8 flex flex-col sm:flex-row items-center gap-4">
-          <Link href="/signup">
-            <Button size="lg" className="rounded-xl gap-2">
-              {t("getStarted")} <ArrowRight className="h-4 w-4" />
-            </Button>
-          </Link>
-          <Link href="#features">
-            <Button variant="outline" size="lg" className="rounded-xl">
-              {t("viewDemo")}
-            </Button>
-          </Link>
+      <section className="py-24 md:py-36 lg:py-44">
+        <div className="container text-center max-w-4xl mx-auto">
+          <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card px-4 py-1.5 text-sm text-muted-foreground mb-8 animate-fade-in">
+            <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
+            {t("heroBadge")}
+          </div>
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight mb-6 animate-fade-in">
+            {t("heroTitle1")}
+            <br />
+            <span className="text-primary">{t("heroTitle2")}</span>
+          </h1>
+          <p
+            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 animate-fade-in"
+            style={{ animationDelay: "0.1s" }}
+          >
+            {t("heroDesc")}
+          </p>
+          <div
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in"
+            style={{ animationDelay: "0.2s" }}
+          >
+            <Link href="/auth">
+              <Button size="lg" className="rounded-lg text-base px-8 gap-2">
+                {t("getStarted")} <ArrowRight className="h-4 w-4" />
+              </Button>
+            </Link>
+            <Link href="/dashboard">
+              <Button variant="outline" size="lg" className="rounded-lg text-base px-8">
+                {t("viewDemo")}
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* Features */}
-      <section id="features" className="px-4 py-20 md:py-28">
-        <div className="container mx-auto max-w-6xl">
-          <FadeIn className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold">
-              {t("featuresHeading1")}{" "}
-              <span className="text-primary">{t("featuresHeading2")}</span>
+      <section id="features" className="py-24 border-t border-border/40">
+        <div className="container max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+              {t("featuresHeading1")} <span className="text-primary">{t("featuresHeading2")}</span>
             </h2>
-            <p className="mt-4 text-muted-foreground max-w-xl mx-auto">
-              {t("featuresDesc")}
-            </p>
-          </FadeIn>
-          <div className="grid sm:grid-cols-2 gap-6">
-            {features.map((f) => (
-              <FadeIn key={f.title}>
-                <div className="group rounded-2xl border border-border/50 bg-card p-6 transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5">
-                  <div className="mb-4 inline-flex rounded-xl bg-primary/10 p-3">
-                    <f.icon className="h-6 w-6 text-primary" />
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2">{f.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">{t("featuresDesc")}</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {features.map((feature, i) => (
+              <div
+                key={feature.title}
+                className="group rounded-xl border border-border/40 bg-card p-8 transition-all duration-200 hover:border-primary/30 hover:bg-card/80 animate-fade-in"
+                style={{ animationDelay: `${i * 0.1}s` }}
+              >
+                <div className="mb-4 inline-flex items-center justify-center rounded-lg bg-primary/10 p-3">
+                  <feature.icon className="h-6 w-6 text-primary" />
                 </div>
-              </FadeIn>
+                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* How It Works */}
-      <section className="px-4 py-20 bg-muted/30">
-        <div className="container mx-auto max-w-4xl">
-          <FadeIn className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold">{t("howItWorksHeading")}</h2>
-          </FadeIn>
-          <div className="grid md:grid-cols-3 gap-8">
-            {steps.map((s) => (
-              <FadeIn key={s.num}>
-                <div className="text-center">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary text-primary-foreground font-bold text-lg mb-4">
-                    {s.num}
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2">{s.title}</h3>
-                  <p className="text-sm text-muted-foreground">{s.desc}</p>
+      <section className="py-24 border-t border-border/40">
+        <div className="container max-w-5xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-center mb-16">
+            {t("howItWorksHeading")}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+            <div className="hidden md:block absolute top-10 left-[20%] right-[20%] h-px bg-border/60" />
+            {steps.map((step, i) => (
+              <div
+                key={step.num}
+                className="flex flex-col items-center text-center animate-fade-in"
+                style={{ animationDelay: `${i * 0.15}s` }}
+              >
+                <div className="relative z-10 flex items-center justify-center w-20 h-20 rounded-full border-2 border-primary/40 bg-card mb-6">
+                  <span className="text-2xl font-bold text-primary">{step.num}</span>
                 </div>
-              </FadeIn>
+                <h3 className="text-lg font-semibold mb-2">{step.title}</h3>
+                <p className="text-muted-foreground text-sm max-w-xs">{step.desc}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Social Proof */}
-      <section className="px-4 py-20">
-        <div className="container mx-auto max-w-3xl text-center">
-          <FadeIn>
-            <div className="flex items-center justify-center gap-1 mb-4">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+      <section className="py-24 border-t border-border/40">
+        <div className="container max-w-4xl mx-auto text-center">
+          <div className="flex items-center justify-center mb-6">
+            <div className="flex -space-x-3">
+              {avatarInitials.map((initials) => (
+                <Avatar key={initials} className="h-10 w-10 border-2 border-background">
+                  <AvatarFallback className="bg-primary/20 text-primary text-xs font-semibold">
+                    {initials}
+                  </AvatarFallback>
+                </Avatar>
               ))}
             </div>
-            <h2 className="text-2xl font-bold mb-2">{t("socialProofHeading")}</h2>
-            <p className="text-sm text-muted-foreground mb-8">
-              <CheckCircle className="inline h-4 w-4 mr-1 text-green-500" />
-              {t("socialProofCount")}
+            <span className="ml-4 text-lg font-semibold text-primary">{t("socialProofCount")}</span>
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-12">
+            {t("socialProofHeading")}
+          </h2>
+          <div className="rounded-xl border border-border/40 bg-card p-8 md:p-10 max-w-2xl mx-auto animate-fade-in">
+            <div className="text-5xl text-primary/30 mb-4 leading-none">&ldquo;</div>
+            <p className="text-lg md:text-xl text-foreground/90 leading-relaxed mb-6">
+              {t("testimonialQuote")}
             </p>
-            <blockquote className="text-lg italic text-muted-foreground leading-relaxed border-l-4 border-primary pl-6 text-left">
-              &ldquo;{t("testimonialQuote")}&rdquo;
-            </blockquote>
-            <div className="mt-6 flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
-                {(t("testimonialAuthor") as string)[0]}
-              </div>
-              <div className="text-left">
-                <p className="font-medium text-sm">{t("testimonialAuthor")}</p>
-                <p className="text-xs text-muted-foreground">{t("testimonialRole")}</p>
-              </div>
+            <div>
+              <p className="font-semibold">{t("testimonialAuthor")}</p>
+              <p className="text-sm text-muted-foreground">{t("testimonialRole")}</p>
             </div>
-          </FadeIn>
+          </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="px-4 py-20 bg-primary/5">
-        <div className="container mx-auto max-w-2xl text-center">
-          <FadeIn>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("ctaTitle")}</h2>
-            <p className="text-muted-foreground mb-8">{t("ctaDesc")}</p>
-            <Link href="/signup">
-              <Button size="lg" className="rounded-xl gap-2">
-                {t("ctaButton")} <ArrowRight className="h-4 w-4" />
-              </Button>
-            </Link>
-          </FadeIn>
+      {/* Final CTA */}
+      <section className="py-24 border-t border-border/40">
+        <div className="container text-center max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">{t("ctaTitle")}</h2>
+          <p className="text-muted-foreground text-lg mb-8">{t("ctaDesc")}</p>
+          <Link href="/auth">
+            <Button size="lg" className="rounded-lg text-base px-10 gap-2">
+              {t("ctaButton")} <ArrowRight className="h-4 w-4" />
+            </Button>
+          </Link>
         </div>
       </section>
     </div>

@@ -1,8 +1,6 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useI18n } from "@/lib/i18n";
-import { CheckCircle, Circle } from "lucide-react";
 
 interface PortfolioScoreProps {
   data: {
@@ -20,10 +18,6 @@ interface PortfolioScoreProps {
 export function PortfolioScore({ data }: PortfolioScoreProps) {
   const { t } = useI18n();
 
-  const r = 40;
-  const circumference = 2 * Math.PI * r;
-  const offset = circumference - (data.score / 100) * circumference;
-
   const checklist = [
     { done: data.items.hasAvatar, label: t("scoreProfilePhoto") },
     { done: data.items.hasBio, label: t("scoreBio") },
@@ -32,48 +26,70 @@ export function PortfolioScore({ data }: PortfolioScoreProps) {
     { done: data.items.hasSocialLinks, label: t("scoreSocialLinks") },
   ];
 
+  const scorePercent = data.score;
+  const radius = 54;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset =
+    circumference - (scorePercent / 100) * circumference;
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-sm font-medium">{t("portfolioScore")}</CardTitle>
-      </CardHeader>
-      <CardContent className="flex items-center gap-6">
-        <div className="relative shrink-0">
-          <svg width={96} height={96} viewBox="0 0 96 96">
-            <circle cx={48} cy={48} r={r} fill="none" stroke="currentColor" strokeWidth={6} className="text-muted/30" />
-            <circle
-              cx={48}
-              cy={48}
-              r={r}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={6}
-              strokeDasharray={circumference}
-              strokeDashoffset={offset}
-              strokeLinecap="round"
-              className="text-primary transition-all duration-700"
-              transform="rotate(-90 48 48)"
-            />
-          </svg>
-          <span className="absolute inset-0 flex items-center justify-center text-lg font-bold">
-            {data.score}%
-          </span>
-        </div>
-        <ul className="space-y-2 text-sm">
-          {checklist.map((item) => (
-            <li key={item.label} className="flex items-center gap-2">
-              {item.done ? (
-                <CheckCircle className="h-4 w-4 text-green-500 shrink-0" />
-              ) : (
-                <Circle className="h-4 w-4 text-muted-foreground shrink-0" />
-              )}
-              <span className={item.done ? "text-foreground" : "text-muted-foreground"}>
-                {item.label}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </CardContent>
-    </Card>
+    <div className="rounded-xl border border-border/40 bg-card p-6 flex flex-col items-center">
+      <h2 className="text-lg font-semibold mb-4 self-start">
+        {t("portfolioScore")}
+      </h2>
+
+      <div className="relative w-36 h-36 mb-6">
+        <svg className="w-full h-full -rotate-90" viewBox="0 0 120 120">
+          <circle
+            cx="60"
+            cy="60"
+            r={radius}
+            fill="none"
+            className="stroke-muted/30"
+            strokeWidth="10"
+          />
+          <circle
+            cx="60"
+            cy="60"
+            r={radius}
+            fill="none"
+            className="transition-all duration-700"
+            strokeWidth="10"
+            strokeLinecap="round"
+            strokeDasharray={circumference}
+            strokeDashoffset={strokeDashoffset}
+            style={{ stroke: "#FBBF24" }}
+          />
+        </svg>
+        <span className="absolute inset-0 flex items-center justify-center text-3xl font-bold">
+          {scorePercent}%
+        </span>
+      </div>
+
+      <ul className="w-full space-y-3">
+        {checklist.map((item) => (
+          <li key={item.label} className="flex items-center gap-3">
+            <div
+              className={`w-4 h-4 rounded-sm border flex items-center justify-center text-xs ${
+                item.done
+                  ? "bg-accent border-accent text-accent-foreground"
+                  : "border-muted-foreground/30"
+              }`}
+            >
+              {item.done && "\u2713"}
+            </div>
+            <span
+              className={
+                item.done
+                  ? "text-muted-foreground line-through"
+                  : "text-foreground text-sm"
+              }
+            >
+              {item.label}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

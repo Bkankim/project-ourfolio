@@ -57,36 +57,56 @@ export default function DashboardPage() {
 
   const displayName = getUserDisplayName(profile?.fullName, user?.email);
 
+  const formattedDate = new Date().toLocaleDateString(undefined, {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
   if (!data) {
     return (
-      <div className="space-y-6">
-        <Skeleton className="h-8 w-64" />
-        <div className="grid gap-4 sm:grid-cols-3">
-          <Skeleton className="h-28" />
-          <Skeleton className="h-28" />
-          <Skeleton className="h-28" />
+      <div className="animate-fade-in space-y-8">
+        <div>
+          <Skeleton className="h-9 w-64 mb-2" />
+          <Skeleton className="h-5 w-48" />
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {[1, 2, 3].map((i) => (
+            <Skeleton key={i} className="h-24 rounded-xl" />
+          ))}
+        </div>
+        <Skeleton className="h-48 rounded-xl" />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <Skeleton className="h-80 rounded-xl" />
+          <div className="lg:col-span-2 space-y-6">
+            <Skeleton className="h-36 rounded-xl" />
+            <Skeleton className="h-36 rounded-xl" />
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-8">
+    <div className="animate-fade-in space-y-8">
       <div>
-        <h1 className="text-2xl font-bold">{t("welcomeBack")} {displayName}</h1>
-        <p className="text-muted-foreground">{t("dashboardDesc")}</p>
+        <h1 className="text-3xl font-bold tracking-tight">
+          {t("welcomeBack")} {displayName}
+        </h1>
+        <p className="text-muted-foreground mt-1">{formattedDate}</p>
       </div>
 
       <StatsCards stats={data.stats} />
 
-      <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
-        <WeeklyChart dailyViews={data.dailyViews} />
-        <PortfolioScore data={data.portfolioScore} />
-      </div>
+      <WeeklyChart dailyViews={data.dailyViews} viewsTrend={data.stats.viewsChange} />
 
-      <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
-        <QuickActions username={profile?.username} />
-        <RecentLeads leads={data.recentLeads} />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <PortfolioScore data={data.portfolioScore} />
+        <div className="lg:col-span-2 space-y-6">
+          <QuickActions username={profile?.username} />
+          <RecentLeads leads={data.recentLeads} />
+        </div>
       </div>
     </div>
   );
