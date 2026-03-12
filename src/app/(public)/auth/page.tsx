@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -25,7 +24,6 @@ import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
 export default function AuthPage() {
-  const router = useRouter();
   const { t } = useI18n();
   const { signIn, signUp, signInWithGoogle, user } = useAuth();
 
@@ -34,11 +32,10 @@ export default function AuthPage() {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
 
-  useEffect(() => {
-    if (user) router.replace("/dashboard");
-  }, [user, router]);
-
-  if (user) return null;
+  if (user) {
+    window.location.href = "/dashboard";
+    return null;
+  }
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -48,7 +45,7 @@ export default function AuthPage() {
       setLoading(false);
       toast.error(error.message);
     } else {
-      router.replace("/dashboard");
+      window.location.href = "/dashboard";
     }
   };
 
@@ -60,7 +57,7 @@ export default function AuthPage() {
       setLoading(false);
       toast.error(error.message);
     } else {
-      router.replace("/dashboard");
+      window.location.href = "/dashboard";
     }
   };
 
