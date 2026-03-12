@@ -9,34 +9,32 @@ export function useAuth() {
   const { profile, loading: profileLoading, refreshProfile } = useProfile(user?.id);
 
   const handleSignIn = async (email: string, password: string) => {
-    try {
-      await signIn.email({ email, password });
-      return { error: null };
-    } catch (err) {
-      return { error: err instanceof Error ? err : new Error("Sign in failed") };
+    const { error } = await signIn.email({ email, password });
+    if (error) {
+      return { error: new Error(error.message ?? "Sign in failed") };
     }
+    return { error: null };
   };
 
   const handleSignUp = async (email: string, password: string, name: string) => {
-    try {
-      await signUp.email({ email, password, name });
-      return { error: null };
-    } catch (err) {
-      return { error: err instanceof Error ? err : new Error("Sign up failed") };
+    const { error } = await signUp.email({ email, password, name });
+    if (error) {
+      return { error: new Error(error.message ?? "Sign up failed") };
     }
+    return { error: null };
   };
 
   const handleSignInWithGoogle = async () => {
-    try {
-      await signIn.social({ provider: "google" });
-      return { error: null };
-    } catch (err) {
-      return { error: err instanceof Error ? err : new Error("Google sign in failed") };
+    const { error } = await signIn.social({ provider: "google" });
+    if (error) {
+      return { error: new Error(error.message ?? "Google sign in failed") };
     }
+    return { error: null };
   };
 
   const handleSignOut = async () => {
     await signOut();
+    window.location.href = "/auth";
   };
 
   return {
