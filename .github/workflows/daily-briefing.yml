@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Check Slack token health
         id: slack-health
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         with:
@@ -54,7 +54,7 @@ jobs:
 
       - name: Create alert issue if Slack unhealthy
         if: steps.slack-health.outputs.healthy != 'true'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const status = '${{ steps.slack-health.outputs.healthy }}';
@@ -97,7 +97,7 @@ jobs:
             console.log('알림 이슈 생성 완료');
 
       - name: Collect stats and send briefing
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           SLACK_BK_USER_ID: ${{ secrets.SLACK_BK_USER_ID }}
