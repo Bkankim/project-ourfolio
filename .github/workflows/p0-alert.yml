@@ -15,7 +15,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Send Slack DM
-        uses: slackapi/slack-github-action@v1.24.0
+        uses: slackapi/slack-github-action@v3.0.3
         with:
           channel-id: ${{ secrets.SLACK_BK_USER_ID }}
           slack-message: |

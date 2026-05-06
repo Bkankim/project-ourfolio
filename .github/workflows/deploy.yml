@@ -38,7 +38,7 @@ jobs:
 
       - name: Notify Slack - Mirror Failure
         if: failure() && env.SLACK_BOT_TOKEN != ''
-        uses: slackapi/slack-github-action@v1.24.0
+        uses: slackapi/slack-github-action@v3.0.3
         with:
           channel-id: ${{ secrets.SLACK_BK_USER_ID }}
           slack-message: |
@@ -73,7 +73,7 @@ jobs:
 
       - name: Notify Slack - Success
         if: env.SLACK_BOT_TOKEN != ''
-        uses: slackapi/slack-github-action@v1.24.0
+        uses: slackapi/slack-github-action@v3.0.3
         with:
           channel-id: ${{ secrets.SLACK_DEPLOY_CHANNEL }}
           slack-message: |
@@ -83,7 +83,7 @@ jobs:
 
       - name: Notify Slack - Failure
         if: failure() && env.SLACK_BOT_TOKEN != ''
-        uses: slackapi/slack-github-action@v1.24.0
+        uses: slackapi/slack-github-action@v3.0.3
         with:
           channel-id: ${{ secrets.SLACK_BK_USER_ID }}
           slack-message: |
