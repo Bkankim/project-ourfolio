@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
       .where(eq(profiles.userId, userId))
       .limit(1);
 
-    // 2. Delete profile first (cascade: projects, case_studies, leads, analytics_events)
+    // 2. Delete profile first (cascade: projects, leads, analytics_events)
     // DB before R2 — if DB fails, no images are lost on a still-active account
     if (profile) {
       await db.delete(profiles).where(eq(profiles.id, profile.id));

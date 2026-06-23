@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useI18n } from "@/lib/i18n";
-import { FolderPlus, FileText, Eye } from "lucide-react";
+import { FolderPlus, Eye } from "lucide-react";
 
 interface QuickActionsProps {
   username?: string | null;
@@ -16,12 +16,6 @@ export function QuickActions({ username }: QuickActionsProps) {
       label: t("addProject"),
       icon: FolderPlus,
       href: "/dashboard/projects",
-      external: false,
-    },
-    {
-      label: t("writeCaseStudy"),
-      icon: FileText,
-      href: "/dashboard/case-studies",
       external: false,
     },
     {

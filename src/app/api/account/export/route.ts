@@ -3,7 +3,6 @@ import { db } from "@/db";
 import {
   profiles,
   projects,
-  caseStudies,
   leads,
   analyticsEvents,
   consents,
@@ -32,23 +31,21 @@ export async function GET(request: NextRequest) {
 
     // Fetch all related data in parallel (empty arrays if no profile)
     // Note: account table intentionally excluded (contains accessToken/refreshToken/password)
-    const [userProjects, userCaseStudies, userLeads, userEvents, userConsents] =
+    const [userProjects, userLeads, userEvents, userConsents] =
       profileId
         ? await Promise.all([
             db.select().from(projects).where(eq(projects.profileId, profileId)),
-            db.select().from(caseStudies).where(eq(caseStudies.profileId, profileId)),
             db.select().from(leads).where(eq(leads.profileId, profileId)),
             db.select().from(analyticsEvents).where(eq(analyticsEvents.profileId, profileId)),
             db.select().from(consents).where(eq(consents.userId, userId)),
           ])
-        : [[], [], [], [], []];
+        : [[], [], [], []];
 
     const exportData = {
       exportedAt: new Date().toISOString(),
       user,
       profile: profile ?? null,
       projects: userProjects,
-      caseStudies: userCaseStudies,
       leads: userLeads,
       analyticsEvents: userEvents,
       consents: userConsents,

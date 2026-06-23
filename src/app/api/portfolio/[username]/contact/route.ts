@@ -48,7 +48,7 @@ export async function POST(
       senderName: parsed.data.senderName,
       senderEmail: parsed.data.senderEmail,
       message: parsed.data.message,
-      budgetRange: parsed.data.budgetRange ?? null,
+      inquiryType: parsed.data.inquiryType ?? null,
       privacyConsent: true,
     })
     .returning();
@@ -68,7 +68,7 @@ export async function POST(
         senderName: parsed.data.senderName,
         senderEmail: parsed.data.senderEmail,
         message: parsed.data.message ?? null,
-        budgetRange: parsed.data.budgetRange ?? null,
+        inquiryType: parsed.data.inquiryType ?? null,
         portfolioUrl: `${appUrl}/${username}`,
       });
     } catch (err) {

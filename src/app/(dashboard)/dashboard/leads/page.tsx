@@ -10,7 +10,7 @@ export default function LeadsPage() {
   const { t } = useI18n();
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
-  const [budgetFilter, setBudgetFilter] = useState("all");
+  const [inquiryFilter, setInquiryFilter] = useState("all");
 
   useEffect(() => {
     fetch("/api/leads")
@@ -34,9 +34,9 @@ export default function LeadsPage() {
   };
 
   const filtered =
-    budgetFilter === "all"
+    inquiryFilter === "all"
       ? leads
-      : leads.filter((l) => l.budgetRange === budgetFilter);
+      : leads.filter((l) => l.inquiryType === inquiryFilter);
 
   if (loading) {
     return (
@@ -57,8 +57,8 @@ export default function LeadsPage() {
 
       <LeadList
         leads={filtered}
-        budgetFilter={budgetFilter}
-        onBudgetFilterChange={setBudgetFilter}
+        inquiryFilter={inquiryFilter}
+        onInquiryFilterChange={setInquiryFilter}
         onToggleRead={handleToggleRead}
       />
     </div>

@@ -18,21 +18,21 @@ import { useI18n } from "@/lib/i18n";
 import { formatDistanceToNow } from "date-fns";
 import { Mail, ChevronDown, Eye, EyeOff } from "lucide-react";
 import type { LeadClient as Lead } from "@/types/portfolio";
-import { BUDGET_OPTIONS } from "@/types/portfolio";
+import { INQUIRY_TYPES } from "@/types/portfolio";
 
 interface LeadListProps {
   leads: Lead[];
-  budgetFilter: string;
-  onBudgetFilterChange: (value: string) => void;
+  inquiryFilter: string;
+  onInquiryFilterChange: (value: string) => void;
   onToggleRead: (id: string, isRead: boolean) => void;
 }
 
-const ALL_BUDGET_OPTIONS = [{ value: "all", key: "budgetAll" }, ...BUDGET_OPTIONS] as const;
+const ALL_INQUIRY_TYPES = [{ value: "all", key: "inquiryAll" }, ...INQUIRY_TYPES] as const;
 
 export function LeadList({
   leads,
-  budgetFilter,
-  onBudgetFilterChange,
+  inquiryFilter,
+  onInquiryFilterChange,
   onToggleRead,
 }: LeadListProps) {
   const { t } = useI18n();
@@ -41,16 +41,16 @@ export function LeadList({
     <div className="space-y-4">
       <div className="flex items-center gap-3">
         <Select
-          value={budgetFilter}
-          onValueChange={(v) => onBudgetFilterChange(v ?? "all")}
+          value={inquiryFilter}
+          onValueChange={(v) => onInquiryFilterChange(v ?? "all")}
         >
           <SelectTrigger>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            {ALL_BUDGET_OPTIONS.map((opt) => (
+            {ALL_INQUIRY_TYPES.map((opt) => (
               <SelectItem key={opt.value} value={opt.value}>
-                {t(opt.key as Parameters<typeof t>[0])}
+                {t(opt.key)}
               </SelectItem>
             ))}
           </SelectContent>
@@ -84,9 +84,13 @@ export function LeadList({
                     </span>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
-                    {lead.budgetRange && (
+                    {lead.inquiryType && (
                       <Badge variant="secondary" className="text-xs">
-                        {lead.budgetRange}
+                        {t(
+                          INQUIRY_TYPES.find(
+                            (o) => o.value === lead.inquiryType
+                          )?.key ?? "inquiryOther"
+                        )}
                       </Badge>
                     )}
                     <span className="text-xs text-muted-foreground">

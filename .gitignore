@@ -56,3 +56,6 @@ skills-lock.json
 /ops
 C:\Users\
 lighthouse.*/
+
+# GJC workflow state
+.gjc/

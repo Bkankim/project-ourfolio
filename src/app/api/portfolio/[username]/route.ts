@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db";
-import { profiles, projects, caseStudies } from "@/db/schema";
+import { profiles, projects } from "@/db/schema";
 import { eq, asc } from "drizzle-orm";
 
 export async function GET(
@@ -22,24 +22,16 @@ export async function GET(
     );
   }
 
-  const [userProjects, userCaseStudies] = await Promise.all([
-    db
+  const userProjects = await db
       .select()
       .from(projects)
       .where(eq(projects.profileId, profile.id))
-      .orderBy(asc(projects.displayOrder)),
-    db
-      .select()
-      .from(caseStudies)
-      .where(eq(caseStudies.profileId, profile.id))
-      .orderBy(asc(caseStudies.displayOrder)),
-  ]);
+      .orderBy(asc(projects.displayOrder));
 
   return NextResponse.json(
     {
       profile,
       projects: userProjects,
-      caseStudies: userCaseStudies,
     },
     {
       headers: {

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getAuthSession, handleApiError } from "@/lib/auth-guard";
 import { db } from "@/db";
-import { projects, caseStudies, leads, analyticsEvents } from "@/db/schema";
+import { projects, leads, analyticsEvents } from "@/db/schema";
 import { eq, and, gte, count, sql } from "drizzle-orm";
 
 export async function GET() {
@@ -15,7 +15,6 @@ export async function GET() {
     // Parallel queries
     const [
       projectCount,
-      caseStudyCount,
       totalLeadCount,
       recentLeads,
       viewsThisWeek,
@@ -30,10 +29,6 @@ export async function GET() {
         .select({ count: count() })
         .from(projects)
         .where(eq(projects.profileId, profileId)),
-      db
-        .select({ count: count() })
-        .from(caseStudies)
-        .where(eq(caseStudies.profileId, profileId)),
       db
         .select({ count: count() })
         .from(leads)
@@ -125,7 +120,6 @@ export async function GET() {
     const hasBio = Boolean(profile.bio);
     const hasAvatar = Boolean(profile.avatarUrl);
     const hasProjects = (projectCount[0]?.count ?? 0) >= 3;
-    const hasCaseStudy = (caseStudyCount[0]?.count ?? 0) >= 1;
     const hasSocialLinks =
       Object.values(
         (profile.socialLinks as Record<string, string>) ?? {}
@@ -135,7 +129,6 @@ export async function GET() {
       hasAvatar,
       hasBio,
       hasProjects,
-      hasCaseStudy,
       hasSocialLinks,
     ];
     const score = Math.round(
@@ -159,7 +152,6 @@ export async function GET() {
           hasAvatar,
           hasBio,
           hasProjects,
-          hasCaseStudy,
           hasSocialLinks,
         },
       },

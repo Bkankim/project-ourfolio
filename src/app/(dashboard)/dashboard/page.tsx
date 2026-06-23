@@ -31,7 +31,6 @@ interface DashboardData {
       hasAvatar: boolean;
       hasBio: boolean;
       hasProjects: boolean;
-      hasCaseStudy: boolean;
       hasSocialLinks: boolean;
     };
   };
@@ -40,7 +39,7 @@ interface DashboardData {
     senderName: string;
     senderEmail: string;
     message: string | null;
-    budgetRange: string | null;
+    inquiryType: string | null;
     isRead: boolean;
     createdAt: string;
   }[];

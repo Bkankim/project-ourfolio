@@ -20,37 +20,16 @@ export const createProjectSchema = z.object({
   imageUrl: z.string().url().optional().or(z.literal("")),
   category: z.string().max(50).optional(),
   tags: z.array(z.string().max(30)).max(10).optional(),
-  externalLink: z.string().url().optional().or(z.literal("")),
+  demoUrl: z.string().url().optional().or(z.literal("")),
+  repoUrl: z.string().url().optional().or(z.literal("")),
+  bodyMarkdown: z.string().max(20000).optional(),
+  role: z.string().max(200).optional(),
+  stack: z.array(z.string().max(40)).max(30).optional(),
   featured: z.boolean().optional(),
   displayOrder: z.number().int().min(0).optional(),
 });
 
 export const updateProjectSchema = createProjectSchema.partial();
-
-// ── Case Study schemas ──────────────────────────────
-const metricSchema = z.object({
-  label: z.string().min(1).max(100),
-  value: z.string().min(1).max(50),
-  unit: z.string().max(30),
-});
-
-export const createCaseStudySchema = z.object({
-  title: z.string().min(1, "Title is required").max(200),
-  clientName: z.string().max(100).optional(),
-  professionTemplate: z
-    .enum(["dev", "design", "marketing", "consulting", "other"])
-    .optional(),
-  projectId: z.string().uuid().optional().nullable(),
-  problem: z.string().max(5000).optional(),
-  solution: z.string().max(5000).optional(),
-  result: z.string().max(5000).optional(),
-  metrics: z.array(metricSchema).max(10).optional(),
-  coverImageUrl: z.string().url().optional().or(z.literal("")),
-  displayOrder: z.number().int().min(0).optional(),
-});
-
-export const updateCaseStudySchema = createCaseStudySchema.partial();
-
 // ── Profile schema ──────────────────────────────────
 export const updateProfileSchema = z.object({
   fullName: z.string().max(100).optional(),
@@ -91,6 +70,8 @@ export const updateProfileSchema = z.object({
       behance: z.string().url().optional().or(z.literal("")),
     })
     .optional(),
+  skills: z.array(z.string().max(40)).max(50).optional(),
+  resumeUrl: z.string().url().optional().or(z.literal("")),
 });
 
 // ── Contact form schema ─────────────────────────────
@@ -98,9 +79,7 @@ export const contactFormSchema = z.object({
   senderName: z.string().min(1, "Name is required").max(100),
   senderEmail: z.string().email("Invalid email"),
   message: z.string().min(1, "Message is required").max(5000),
-  budgetRange: z
-    .enum(["under-1k", "1k-5k", "5k-10k", "10k-plus"])
-    .optional(),
+  inquiryType: z.enum(["hiring", "collab", "other"]).optional(),
   privacyConsent: z.literal(true, { message: "Privacy consent is required" }),
 });
 

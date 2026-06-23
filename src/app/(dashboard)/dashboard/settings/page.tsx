@@ -28,6 +28,8 @@ export default function SettingsPage() {
   const [primaryColor, setPrimaryColor] = useState("#3B82F6");
   const [accentColor, setAccentColor] = useState("#FBBF24");
   const [socialLinks, setSocialLinks] = useState<SocialLinks>({});
+  const [skills, setSkills] = useState<string[]>([]);
+  const [resumeUrl, setResumeUrl] = useState("");
   const [saving, setSaving] = useState(false);
 
   /* eslint-disable react-hooks/set-state-in-effect -- profile loads async from auth hook; form state init requires sync */
@@ -43,6 +45,8 @@ export default function SettingsPage() {
       setPrimaryColor(profile.primaryColor);
       setAccentColor(profile.accentColor);
       setSocialLinks((profile.socialLinks as SocialLinks) ?? {});
+      setSkills(profile.skills ?? []);
+      setResumeUrl(profile.resumeUrl ?? "");
     }
   }, [profile]);
   /* eslint-enable react-hooks/set-state-in-effect */
@@ -63,6 +67,8 @@ export default function SettingsPage() {
         primaryColor,
         accentColor,
         socialLinks,
+        skills,
+        resumeUrl: resumeUrl || undefined,
       }),
     });
 
@@ -105,6 +111,10 @@ export default function SettingsPage() {
         setProfession={setProfession}
         avatarUrl={avatarUrl}
         setAvatarUrl={setAvatarUrl}
+        skills={skills}
+        setSkills={setSkills}
+        resumeUrl={resumeUrl}
+        setResumeUrl={setResumeUrl}
       />
 
       <TemplatePicker template={template} setTemplate={setTemplate} />

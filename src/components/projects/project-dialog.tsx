@@ -58,9 +58,14 @@ export function ProjectDialog({
   const [category, setCategory] = useState(project?.category ?? "");
   const [tags, setTags] = useState<string[]>(project?.tags ?? []);
   const [tagInput, setTagInput] = useState("");
-  const [externalLink, setExternalLink] = useState(project?.externalLink ?? "");
+  const [demoUrl, setDemoUrl] = useState(project?.demoUrl ?? "");
+  const [repoUrl, setRepoUrl] = useState(project?.repoUrl ?? "");
   const [featured, setFeatured] = useState(project?.featured ?? false);
   const [imageUrl, setImageUrl] = useState(project?.imageUrl ?? "");
+  const [role, setRole] = useState(project?.role ?? "");
+  const [stack, setStack] = useState<string[]>(project?.stack ?? []);
+  const [stackInput, setStackInput] = useState("");
+  const [bodyMarkdown, setBodyMarkdown] = useState(project?.bodyMarkdown ?? "");
   const [uploading, setUploading] = useState(false);
 
   const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -70,6 +75,16 @@ export function ProjectDialog({
         setTags([...tags, tagInput.trim()]);
       }
       setTagInput("");
+    }
+  };
+
+  const handleStackKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && stackInput.trim()) {
+      e.preventDefault();
+      if (!stack.includes(stackInput.trim()) && stack.length < 20) {
+        setStack([...stack, stackInput.trim()]);
+      }
+      setStackInput("");
     }
   };
 
@@ -88,9 +103,13 @@ export function ProjectDialog({
       description: description || undefined,
       category: category || undefined,
       tags,
-      externalLink: externalLink || undefined,
+      demoUrl: demoUrl || undefined,
+      repoUrl: repoUrl || undefined,
       featured,
       imageUrl: imageUrl || undefined,
+      role: role || undefined,
+      stack,
+      bodyMarkdown: bodyMarkdown || undefined,
     });
   };
 
@@ -158,12 +177,59 @@ export function ProjectDialog({
           </div>
 
           <div className="space-y-2">
-            <Label>{t("projectExternalLink")}</Label>
+            <Label>{t("projectDemoUrl")}</Label>
             <Input
-              value={externalLink}
-              onChange={(e) => setExternalLink(e.target.value)}
+              value={demoUrl}
+              onChange={(e) => setDemoUrl(e.target.value)}
               type="url"
-              placeholder="https://"
+              placeholder="https://demo.example.com"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label>{t("projectRepoUrl")}</Label>
+            <Input
+              value={repoUrl}
+              onChange={(e) => setRepoUrl(e.target.value)}
+              type="url"
+              placeholder="https://github.com/..."
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label>{t("projectRole")}</Label>
+            <Input value={role} onChange={(e) => setRole(e.target.value)} />
+          </div>
+
+          <div className="space-y-2">
+            <Label>{t("projectStack")}</Label>
+            <div className="flex flex-wrap gap-1.5 mb-2">
+              {stack.map((item) => (
+                <Badge key={item} variant="secondary" className="gap-1">
+                  {item}
+                  <button
+                    onClick={() => setStack(stack.filter((s) => s !== item))}
+                    className="hover:text-destructive"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </Badge>
+              ))}
+            </div>
+            <Input
+              value={stackInput}
+              onChange={(e) => setStackInput(e.target.value)}
+              onKeyDown={handleStackKeyDown}
+              placeholder={t("tagPlaceholder")}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label>{t("projectBody")}</Label>
+            <Textarea
+              value={bodyMarkdown}
+              onChange={(e) => setBodyMarkdown(e.target.value)}
+              rows={5}
             />
           </div>
 

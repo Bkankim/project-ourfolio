@@ -9,7 +9,6 @@ interface PortfolioScoreProps {
       hasAvatar: boolean;
       hasBio: boolean;
       hasProjects: boolean;
-      hasCaseStudy: boolean;
       hasSocialLinks: boolean;
     };
   };
@@ -22,7 +21,6 @@ export function PortfolioScore({ data }: PortfolioScoreProps) {
     { done: data.items.hasAvatar, label: t("scoreProfilePhoto") },
     { done: data.items.hasBio, label: t("scoreBio") },
     { done: data.items.hasProjects, label: t("scoreProjects") },
-    { done: data.items.hasCaseStudy, label: t("scoreCaseStudy") },
     { done: data.items.hasSocialLinks, label: t("scoreSocialLinks") },
   ];
 

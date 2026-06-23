@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, FolderOpen, FileText, MessageSquare, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, FolderOpen, MessageSquare, Settings, LogOut } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/hooks/use-auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -32,7 +32,6 @@ export function AppSidebar() {
   const items = [
     { title: t("dashboard"), url: "/dashboard", icon: LayoutDashboard },
     { title: t("projects"), url: "/dashboard/projects", icon: FolderOpen },
-    { title: t("caseStudies"), url: "/dashboard/case-studies", icon: FileText },
     { title: t("leads"), url: "/dashboard/leads", icon: MessageSquare },
     { title: t("settings"), url: "/dashboard/settings", icon: Settings },
   ];

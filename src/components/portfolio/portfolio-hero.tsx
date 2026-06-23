@@ -1,10 +1,6 @@
-"use client";
-
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { useI18n } from "@/lib/i18n";
 import { getInitials } from "@/lib/utils";
-import { trackEvent } from "@/lib/analytics";
+import { HeroCta } from "@/components/portfolio/hero-cta";
 import { Github, Linkedin, Twitter, Globe, Dribbble } from "lucide-react";
 import type { SocialLinks } from "@/types/portfolio";
 import type { TemplateStyle } from "@/components/portfolio/template-styles";
@@ -22,6 +18,7 @@ interface PortfolioHeroProps {
   profile: Profile;
   socialLinks: SocialLinks;
   style: TemplateStyle;
+  ctaLabel: string;
 }
 
 const SOCIAL_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -32,14 +29,12 @@ const SOCIAL_ICONS: Record<string, React.ComponentType<{ className?: string }>> 
   dribbble: Dribbble,
 };
 
-export function PortfolioHero({ profile, socialLinks, style }: PortfolioHeroProps) {
-  const { t } = useI18n();
-
-  const handleCtaClick = () => {
-    trackEvent(profile.id, "cta_click");
-    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-  };
-
+export function PortfolioHero({
+  profile,
+  socialLinks,
+  style,
+  ctaLabel,
+}: PortfolioHeroProps) {
   const socialEntries = Object.entries(socialLinks).filter(
     ([, url]) => url && url.trim()
   );
@@ -59,7 +54,9 @@ export function PortfolioHero({ profile, socialLinks, style }: PortfolioHeroProp
           <p className={`text-lg ${style.muted}`}>{profile.tagline}</p>
         )}
         {profile.profession && (
-          <p className={`text-sm ${style.accent} font-medium`}>{profile.profession}</p>
+          <p className={`text-sm ${style.accent} font-medium`}>
+            {profile.profession}
+          </p>
         )}
       </div>
 
@@ -89,14 +86,7 @@ export function PortfolioHero({ profile, socialLinks, style }: PortfolioHeroProp
         </div>
       )}
 
-      <Button
-        size="lg"
-        className="rounded-xl"
-        style={{ backgroundColor: "var(--portfolio-primary)" }}
-        onClick={handleCtaClick}
-      >
-        {t("letsWorkTogether")}
-      </Button>
+      <HeroCta profileId={profile.id} label={ctaLabel} />
     </section>
   );
 }

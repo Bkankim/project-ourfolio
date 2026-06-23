@@ -12,31 +12,33 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { useI18n } from "@/lib/i18n";
+import { getClientT, type Locale } from "@/lib/i18n-translations";
 import { trackEvent } from "@/lib/analytics";
 import { toast } from "sonner";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Send, CheckCircle } from "lucide-react";
 import type { TemplateStyle } from "@/components/portfolio/template-styles";
-import { BUDGET_OPTIONS } from "@/types/portfolio";
+import { INQUIRY_TYPES } from "@/types/portfolio";
 
 interface PortfolioContactProps {
   profileId: string;
   username: string;
   style: TemplateStyle;
+  locale: Locale;
 }
 
 export function PortfolioContact({
   profileId,
   username,
   style,
+  locale,
 }: PortfolioContactProps) {
-  const { t } = useI18n();
+  const t = getClientT(locale);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  const [budget, setBudget] = useState("");
+  const [inquiryType, setInquiryType] = useState("");
   const [privacyConsent, setPrivacyConsent] = useState(false);
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
@@ -52,7 +54,7 @@ export function PortfolioContact({
         senderName: name,
         senderEmail: email,
         message,
-        budgetRange: budget || undefined,
+        inquiryType: inquiryType || undefined,
         privacyConsent,
       }),
     });
@@ -103,15 +105,15 @@ export function PortfolioContact({
         </div>
 
         <div className="space-y-2">
-          <Label>{t("selectBudget")}</Label>
-          <Select value={budget} onValueChange={(v) => setBudget(v ?? "")}>
+          <Label>{t("selectInquiryType")}</Label>
+          <Select value={inquiryType} onValueChange={(v) => setInquiryType(v ?? "")}>
             <SelectTrigger>
-              <SelectValue placeholder={t("selectBudget")} />
+              <SelectValue placeholder={t("selectInquiryType")} />
             </SelectTrigger>
             <SelectContent>
-              {BUDGET_OPTIONS.map((opt) => (
+              {INQUIRY_TYPES.map((opt) => (
                 <SelectItem key={opt.value} value={opt.value}>
-                  {t(opt.key as Parameters<typeof t>[0])}
+                  {t(opt.key)}
                 </SelectItem>
               ))}
             </SelectContent>

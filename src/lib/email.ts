@@ -18,7 +18,7 @@ interface LeadNotificationParams {
   senderName: string;
   senderEmail: string;
   message: string | null;
-  budgetRange: string | null;
+  inquiryType: string | null;
   portfolioUrl: string;
 }
 
@@ -40,7 +40,7 @@ export async function sendLeadNotification(params: LeadNotificationParams) {
       <p>Hi ${owner},</p>
       <p><strong>${name}</strong> (${email}) sent you a message via your portfolio.</p>
       ${params.message ? `<blockquote>${escapeHtml(params.message)}</blockquote>` : ""}
-      ${params.budgetRange ? `<p><strong>Budget:</strong> ${escapeHtml(params.budgetRange)}</p>` : ""}
+      ${params.inquiryType ? `<p><strong>Inquiry:</strong> ${escapeHtml(params.inquiryType)}</p>` : ""}
       <p><a href="${escapeHtml(params.portfolioUrl)}">View your portfolio</a></p>
     `,
   });

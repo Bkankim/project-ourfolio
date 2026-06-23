@@ -15,6 +15,8 @@ interface Profile {
   primaryColor: string;
   accentColor: string;
   socialLinks: Record<string, string>;
+  skills: string[] | null;
+  resumeUrl: string | null;
 }
 
 export function useProfile(userId: string | undefined) {

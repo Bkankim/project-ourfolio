@@ -79,8 +79,8 @@ export function ProjectGrid({
               >
                 <Star className={`h-3.5 w-3.5 ${project.featured ? "fill-yellow-400 text-yellow-400" : ""}`} />
               </Button>
-              {project.externalLink && (
-                <a href={project.externalLink} target="_blank" rel="noopener noreferrer">
+              {project.repoUrl && (
+                <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
                   <Button variant="ghost" size="sm">
                     <ExternalLink className="h-3.5 w-3.5" />
                   </Button>
