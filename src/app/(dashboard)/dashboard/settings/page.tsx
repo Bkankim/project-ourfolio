@@ -10,6 +10,7 @@ import { ColorSocialForm } from "@/components/settings/color-social-form";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { AccountDeletion } from "@/components/settings/account-deletion";
+import { GithubImport } from "@/components/settings/github-import";
 import { toast } from "sonner";
 import { Download } from "lucide-react";
 import type { Template, SocialLinks } from "@/types/portfolio";
@@ -116,6 +117,8 @@ export default function SettingsPage() {
         resumeUrl={resumeUrl}
         setResumeUrl={setResumeUrl}
       />
+
+      <GithubImport />
 
       <TemplatePicker template={template} setTemplate={setTemplate} />
 

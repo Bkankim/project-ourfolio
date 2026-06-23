@@ -244,6 +244,11 @@ export const translations = {
     accountDeleted: "계정이 삭제되었습니다.",
     exportData: "내 데이터 다운로드",
     exportDataDesc: "모든 데이터를 JSON 파일로 내보냅니다.",
+    githubConnect: "GitHub 연결",
+    githubLoadRepos: "저장소 불러오기",
+    githubImportSelected: "선택 가져오기",
+    githubNotConnected: "GitHub가 연결되지 않았습니다",
+    githubImported: "프로젝트를 가져왔습니다",
   },
   en: {
     features: "Features",
@@ -473,6 +478,11 @@ export const translations = {
     accountDeleted: "Account deleted successfully.",
     exportData: "Download My Data",
     exportDataDesc: "Export all your data as a JSON file.",
+    githubConnect: "Connect GitHub",
+    githubLoadRepos: "Load repositories",
+    githubImportSelected: "Import selected",
+    githubNotConnected: "GitHub not connected",
+    githubImported: "Projects imported",
   },
 } as const;
 
