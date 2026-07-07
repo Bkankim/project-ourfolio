@@ -6,7 +6,7 @@ on:
   workflow_dispatch:          # GitHub UI에서 수동 실행 가능
 
 permissions:
-  issues: write
+  issues: read
   pull-requests: read
 
 jobs:
@@ -14,88 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Check Slack token health
-        id: slack-health
-        uses: actions/github-script@v7
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-        with:
-          script: |
-            const token = process.env.SLACK_BOT_TOKEN;
-
-            if (!token) {
-              core.warning('SLACK_BOT_TOKEN 미설정');
-              core.setOutput('healthy', 'missing');
-              return;
-            }
-
-            try {
-              const res = await fetch('https://slack.com/api/auth.test', {
-                method: 'POST',
-                headers: {
-                  'Authorization': `Bearer ${token}`,
-                  'Content-Type': 'application/x-www-form-urlencoded'
-                }
-              });
-              const data = await res.json();
-
-              if (data.ok) {
-                console.log(`Slack 토큰 정상: team=${data.team}, user=${data.user}`);
-                core.setOutput('healthy', 'true');
-              } else {
-                core.warning(`Slack 토큰 오류: ${data.error}`);
-                core.setOutput('healthy', 'false');
-                core.setOutput('error', data.error);
-              }
-            } catch (e) {
-              core.warning(`Slack API 호출 실패: ${e.message}`);
-              core.setOutput('healthy', 'error');
-            }
-
-      - name: Create alert issue if Slack unhealthy
-        if: steps.slack-health.outputs.healthy != 'true'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const status = '${{ steps.slack-health.outputs.healthy }}';
-            const error = '${{ steps.slack-health.outputs.error }}';
-
-            // 중복 이슈 방지: 열린 이슈 중 동일 제목 검색
-            const existing = await github.rest.issues.listForRepo({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              state: 'open',
-              labels: 'p0,area:dev',
-              per_page: 100
-            });
-            const title = 'Slack 토큰 헬스체크 실패';
-            if (existing.data.some(i => i.title === title)) {
-              console.log('이미 열린 이슈 존재 — 건너뜀');
-              return;
-            }
-
-            let body = `## Slack 토큰 헬스체크 실패\n\n`;
-            if (status === 'missing') {
-              body += `**상태**: \`SLACK_BOT_TOKEN\` 시크릿 미설정\n`;
-              body += `**영향**: 모든 Slack 알림 (핸드오프, P0, 일일 브리핑) 무음 상태\n`;
-            } else {
-              body += `**상태**: 토큰 오류 — \`${error}\`\n`;
-              body += `**영향**: Slack API 인증 실패, 모든 알림 중단\n`;
-            }
-            body += `\n### 조치\n`;
-            body += `1. GitHub Settings > Secrets에서 \`SLACK_BOT_TOKEN\` 확인\n`;
-            body += `2. Slack App 설정에서 토큰 재발급 (필요 시)\n`;
-            body += `3. 이 이슈를 닫으면 다음 헬스체크에서 재생성되지 않음\n`;
-
-            await github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: title,
-              body: body,
-              labels: ['p0', 'area:dev']
-            });
-            console.log('알림 이슈 생성 완료');
-
       - name: Collect stats and send briefing
         uses: actions/github-script@v7
         env:
