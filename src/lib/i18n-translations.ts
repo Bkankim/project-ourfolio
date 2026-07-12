@@ -41,7 +41,7 @@ export const translations = {
     // Landing CTA
     ctaTitle: "포트폴리오를 만들 준비되셨나요?",
     ctaDesc: "OurFolio로 임팩트를 보여주고 클라이언트를 확보하는 전문가들과 함께하세요.",
-    ctaButton: "무료로 시작하기",
+    ctaButton: "시작하기",
 
     // Footer
     footer: "© 2026 OurFolio. All rights reserved.",
@@ -272,7 +272,7 @@ export const translations = {
 
     ctaTitle: "Ready to build your portfolio?",
     ctaDesc: "Join professionals who use OurFolio to showcase impact and land clients.",
-    ctaButton: "Start for free",
+    ctaButton: "Get started",
 
     footer: "© 2026 OurFolio. All rights reserved.",
     footerProduct: "Product",
