@@ -43,7 +43,8 @@ export function useProfile(userId: string | undefined) {
   }, [userId]);
 
   useEffect(() => {
-    fetchProfile();
+    // Defer to a microtask so state updates happen outside the effect body.
+    void Promise.resolve().then(fetchProfile);
   }, [fetchProfile]);
 
   return { profile, loading, refreshProfile: fetchProfile };
