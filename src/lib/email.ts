@@ -26,7 +26,7 @@ interface LeadNotificationParams {
 export async function sendLeadNotification(params: LeadNotificationParams) {
   if (!resend) return; // Graceful skip if RESEND_API_KEY not set (dev env)
 
-  const from = process.env.RESEND_FROM ?? "OurFolio <noreply@ourfolio.com>";
+  const from = process.env.RESEND_FROM ?? "OurFolio <noreply@ourfolio.bkan.dev>";
   const name = escapeHtml(params.senderName);
   const email = escapeHtml(params.senderEmail);
   const owner = escapeHtml(params.ownerName);

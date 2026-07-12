@@ -12,8 +12,7 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-const OG_IMAGE =
-  "https://storage.googleapis.com/gpt-engineer-file-uploads/BTAK62J0nVRCItOBe630g0dd1v43/social-images/social-1773028714155-20260309_125814.webp";
+const OG_IMAGE = "/og.png";
 
 export const metadata: Metadata = {
   title: "OurFolio - 당신의 경험을 전문화하세요",
