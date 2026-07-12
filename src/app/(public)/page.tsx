@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useI18n } from "@/lib/i18n";
 import { ArrowRight, BarChart3, FileText, FolderOpen, MessageSquare, Pencil, Users } from "lucide-react";
 
@@ -20,8 +19,6 @@ export default function HomePage() {
     { num: 2, icon: Pencil, title: t("step2Title"), desc: t("step2Desc") },
     { num: 3, icon: Users, title: t("step3Title"), desc: t("step3Desc") },
   ];
-
-  const avatarInitials = ["JK", "SL", "MK", "YP", "HJ"];
 
   return (
     <div className="flex flex-col">
@@ -52,7 +49,7 @@ export default function HomePage() {
                 {t("getStarted")} <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
-            <Link href="/dashboard">
+            <Link href="/demo">
               <Button variant="outline" size="lg" className="rounded-lg text-base px-8">
                 {t("viewDemo")}
               </Button>
@@ -109,37 +106,6 @@ export default function HomePage() {
                 <p className="text-muted-foreground text-sm max-w-xs">{step.desc}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Social Proof */}
-      <section className="py-24 border-t border-border/40">
-        <div className="container max-w-4xl mx-auto text-center">
-          <div className="flex items-center justify-center mb-6">
-            <div className="flex -space-x-3">
-              {avatarInitials.map((initials) => (
-                <Avatar key={initials} className="h-10 w-10 border-2 border-background">
-                  <AvatarFallback className="bg-primary/20 text-primary text-xs font-semibold">
-                    {initials}
-                  </AvatarFallback>
-                </Avatar>
-              ))}
-            </div>
-            <span className="ml-4 text-lg font-semibold text-primary">{t("socialProofCount")}</span>
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-12">
-            {t("socialProofHeading")}
-          </h2>
-          <div className="rounded-xl border border-border/40 bg-card p-8 md:p-10 max-w-2xl mx-auto animate-fade-in">
-            <div className="text-5xl text-primary/30 mb-4 leading-none">&ldquo;</div>
-            <p className="text-lg md:text-xl text-foreground/90 leading-relaxed mb-6">
-              {t("testimonialQuote")}
-            </p>
-            <div>
-              <p className="font-semibold">{t("testimonialAuthor")}</p>
-              <p className="text-sm text-muted-foreground">{t("testimonialRole")}</p>
-            </div>
           </div>
         </div>
       </section>

@@ -5,7 +5,6 @@ export const translations = {
   ko: {
     // Navbar
     features: "기능",
-    pricing: "가격",
     login: "로그인",
     signup: "회원가입",
 
@@ -14,7 +13,7 @@ export const translations = {
     heroTitle1: "당신의 작업이 말합니다.",
     heroTitle2: "더 크게 만드세요.",
     heroDesc: "구조화된 케이스 스터디, 정량적 성과, 스마트 리드 캡처로 증거 기반 포트폴리오를 만드세요. 돋보이고, 채용되세요.",
-    getStarted: "무료로 시작하기",
+    getStarted: "시작하기",
     viewDemo: "데모 보기",
 
     // Landing Features
@@ -39,13 +38,6 @@ export const translations = {
     step3Title: "클라이언트 확보",
     step3Desc: "스마트 리드 캡처로 인바운드 문의를 받으세요.",
 
-    // Social Proof
-    socialProofHeading: "전문가들이 신뢰합니다",
-    socialProofCount: "500+명의 전문가",
-    testimonialQuote: "OurFolio 덕분에 포트폴리오 전환율이 3배 늘었습니다. 구조화된 케이스 스터디가 클라이언트에게 강한 인상을 줍니다.",
-    testimonialAuthor: "김민수",
-    testimonialRole: "프리랜서 프로덕트 디자이너",
-
     // Landing CTA
     ctaTitle: "포트폴리오를 만들 준비되셨나요?",
     ctaDesc: "OurFolio로 임팩트를 보여주고 클라이언트를 확보하는 전문가들과 함께하세요.",
@@ -54,11 +46,7 @@ export const translations = {
     // Footer
     footer: "© 2026 OurFolio. All rights reserved.",
     footerProduct: "제품",
-    footerCompany: "회사",
     footerFeatures: "기능",
-    footerPricing: "가격",
-    footerContact: "문의",
-    footerAbout: "소개",
 
     // Auth
     authTitle: "OurFolio에 오신 것을 환영합니다",
@@ -252,7 +240,6 @@ export const translations = {
   },
   en: {
     features: "Features",
-    pricing: "Pricing",
     login: "Log in",
     signup: "Sign up",
 
@@ -260,7 +247,7 @@ export const translations = {
     heroTitle1: "Your work speaks.",
     heroTitle2: "Make it louder.",
     heroDesc: "Build an evidence-based portfolio with structured case studies, quantifiable results, and smart lead capture. Stand out and get hired.",
-    getStarted: "Get started free",
+    getStarted: "Get started",
     viewDemo: "View demo",
 
     featuresHeading1: "Everything you need to",
@@ -283,23 +270,13 @@ export const translations = {
     step3Title: "Get Clients",
     step3Desc: "Receive inbound inquiries with smart lead capture.",
 
-    socialProofHeading: "Trusted by professionals",
-    socialProofCount: "500+ professionals",
-    testimonialQuote: "OurFolio tripled my portfolio conversion rate. Structured case studies leave a strong impression on clients.",
-    testimonialAuthor: "Minsoo Kim",
-    testimonialRole: "Freelance Product Designer",
-
     ctaTitle: "Ready to build your portfolio?",
     ctaDesc: "Join professionals who use OurFolio to showcase impact and land clients.",
     ctaButton: "Start for free",
 
     footer: "© 2026 OurFolio. All rights reserved.",
     footerProduct: "Product",
-    footerCompany: "Company",
     footerFeatures: "Features",
-    footerPricing: "Pricing",
-    footerContact: "Contact",
-    footerAbout: "About",
 
     authTitle: "Welcome to OurFolio",
     authDesc: "Sign in to manage your portfolio",

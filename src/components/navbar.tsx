@@ -29,9 +29,6 @@ export function Navbar() {
           <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             {t("features")}
           </a>
-          <a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-            {t("pricing")}
-          </a>
         </nav>
 
         <div className="flex items-center gap-2">
