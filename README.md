@@ -3,6 +3,7 @@
 증거 기반 포트폴리오 빌더. 프로필과 프로젝트를 등록하면 `/{username}` 공개 페이지로 전시되고, 방문자 리드 수집과 조회 애널리틱스를 제공합니다.
 
 - **라이브 데모**: <https://ourfolio.bkan.dev/demo> — 읽기 전용 `demo` 프로필(시드 데이터, 실계정 아님)
+- **소스 코드**: <https://github.com/Bkankim/project-ourfolio> — 공개 미러(원본에서 자동 동기화)
 
 > 이 리포는 수익화 SaaS가 아닌 포트폴리오 전시(showcase) 용도로 운영됩니다.
 
