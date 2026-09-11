@@ -16,11 +16,11 @@ const OG_IMAGE = "/og.png";
 
 export const metadata: Metadata = {
   title: "OurFolio - 온라인 포트폴리오 빌더",
-  description: "개발자와 디자이너를 위한 포트폴리오 빌더. 프로젝트를 올리면 링크 하나가 생겨요.",
+  description: "개발자와 디자이너를 위한 포트폴리오 빌더. 프로젝트를 올리면 링크 하나가 생깁니다.",
   metadataBase: new URL("https://ourfolio.bkan.dev"),
   openGraph: {
     title: "OurFolio - 온라인 포트폴리오 빌더",
-    description: "개발자와 디자이너를 위한 포트폴리오 빌더. 프로젝트를 올리면 링크 하나가 생겨요.",
+    description: "개발자와 디자이너를 위한 포트폴리오 빌더. 프로젝트를 올리면 링크 하나가 생깁니다.",
     type: "website",
     images: [{ url: OG_IMAGE, width: 1200, height: 630 }],
   },
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@OurFolio",
     title: "OurFolio - 온라인 포트폴리오 빌더",
-    description: "개발자와 디자이너를 위한 포트폴리오 빌더. 프로젝트를 올리면 링크 하나가 생겨요.",
+    description: "개발자와 디자이너를 위한 포트폴리오 빌더. 프로젝트를 올리면 링크 하나가 생깁니다.",
     images: [OG_IMAGE],
   },
 };
