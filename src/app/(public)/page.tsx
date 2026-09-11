@@ -35,7 +35,7 @@ export default function HomePage() {
             <span className="text-primary">{t("heroTitle2")}</span>
           </h1>
           <p
-            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 animate-fade-in"
+            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 animate-fade-in break-keep"
             style={{ animationDelay: "0.1s" }}
           >
             {t("heroDesc")}
@@ -65,7 +65,7 @@ export default function HomePage() {
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
               {t("featuresHeading1")} <span className="text-primary">{t("featuresHeading2")}</span>
             </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">{t("featuresDesc")}</p>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto break-keep">{t("featuresDesc")}</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {features.map((feature, i) => (
@@ -78,7 +78,7 @@ export default function HomePage() {
                   <feature.icon className="h-6 w-6 text-primary" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
+                <p className="text-muted-foreground leading-relaxed break-keep">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -103,7 +103,7 @@ export default function HomePage() {
                   <span className="text-2xl font-bold text-primary">{step.num}</span>
                 </div>
                 <h3 className="text-lg font-semibold mb-2">{step.title}</h3>
-                <p className="text-muted-foreground text-sm max-w-xs">{step.desc}</p>
+                <p className="text-muted-foreground text-sm max-w-xs break-keep">{step.desc}</p>
               </div>
             ))}
           </div>
@@ -114,7 +114,7 @@ export default function HomePage() {
       <section className="py-24 border-t border-border/40">
         <div className="container text-center max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">{t("ctaTitle")}</h2>
-          <p className="text-muted-foreground text-lg mb-8">{t("ctaDesc")}</p>
+          <p className="text-muted-foreground text-lg mb-8 break-keep">{t("ctaDesc")}</p>
           <Link href="/auth">
             <Button size="lg" className="rounded-lg text-base px-10 gap-2">
               {t("ctaButton")} <ArrowRight className="h-4 w-4" />

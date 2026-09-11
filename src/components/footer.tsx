@@ -19,7 +19,7 @@ export function Footer() {
               <span>OurFolio</span>
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              {t("heroDesc").slice(0, 60)}…
+              {t("footerTagline")}
             </p>
           </div>
 
