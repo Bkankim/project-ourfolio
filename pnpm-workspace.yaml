@@ -2,3 +2,19 @@ packages: ["."]
 ignoredBuiltDependencies:
   - sharp
   - unrs-resolver
+# 보안 패치 고정(2026-11-08): better-auth가 끌고 오는 prisma·mysql 어댑터와 빌드 도구의 간접 의존성.
+# 런타임 미사용 경로가 대부분이지만 audit high를 0으로 유지하려고 패치 버전으로 올린다.
+overrides:
+  "brace-expansion@>=5 <5.0.11": "^5.0.11"
+  "fast-uri@<3.1.7": "^3.1.7"
+  "browserslist@<4.28.7": "^4.28.7"
+  "source-map-js@<1.2.2": "^1.2.2"
+  "hono@<4.12.25": "^4.12.25"
+  "@hono/node-server@<1.19.10": "^1.19.10"
+  "lodash@<4.18.1": "^4.18.1"
+  "mysql2@<3.22.0": "^3.22.0"
+  "deepmerge-ts@<8.0.0": "^8.0.0"
+  "effect@<3.20.0": "^3.20.0"
+  "nanoid@<3.3.18": "^3.3.18"
+  "postcss@<8.5.18": "^8.5.18"
+  "vite@>=8 <8.1.6": "^8.1.6"
