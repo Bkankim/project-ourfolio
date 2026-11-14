@@ -49,13 +49,13 @@ next-env.d.ts
 # lighthouse
 lighthouse.*
 
-# claude code
+# 로컬에 설치한 에이전트 스킬 (리포에 싣지 않는다)
+/.agents/
+/.claude/skills/
 skills-lock.json
 
 # ops (independent repo)
 /ops
-C:\Users\
-lighthouse.*/
 
 # GJC workflow state
 .gjc/
