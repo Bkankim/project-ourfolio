@@ -46,12 +46,13 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# lighthouse
-lighthouse.*
+# lighthouse (루트의 산출물만. 워크플로 파일 lighthouse.yml 은 걸리지 않게 루트에 고정)
+/lighthouse.*
+.lighthouseci/
 
-# 로컬에 설치한 에이전트 스킬 (리포에 싣지 않는다)
-/.agents/
-/.claude/skills/
+# 로컬에 설치한 외부 스킬 (리포에 싣지 않는다. 이 리포 전용 스킬은 무시하지 않는다)
+/.agents/skills/neon-postgres/
+/.claude/skills/neon-postgres
 skills-lock.json
 
 # ops (independent repo)
